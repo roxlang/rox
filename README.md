@@ -221,3 +221,22 @@ Future directions may include:
 ROX is not trying to compete with mainstream languages. It is an exploration of this question:
 
 > What does programming look like when the language refuses to be clever?
+
+## Web Playground
+
+A local web-based playground is available to try ROX code interactively.
+
+### Setup
+
+```bash
+cd web
+npm install
+```
+
+### Run
+
+```bash
+node web/server.js
+```
+
+Then open `http://localhost:3000` in your browser.

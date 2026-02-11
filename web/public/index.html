@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROX Playground</title>
+    <style>
+        body {
+            font-family: monospace;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #569cd6;
+        }
+
+        textarea {
+            flex: 1;
+            background: #252526;
+            color: #d4d4d4;
+            border: 1px solid #3e3e42;
+            padding: 10px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        #output {
+            background: #1e1e1e;
+            border: 1px solid #3e3e42;
+            white-space: pre-wrap;
+            padding: 10px;
+            overflow: auto;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            background: #0e639c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #1177bb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="column">
+            <h2>Source Code</h2>
+            <textarea id="code" spellcheck="false">
+function main() -> none {
+    print(['H','e','l','l','o',' ','R','O','X','!','\n']);
+
+    let sum <num> = 0;
+    repeat i in range(0, 10, 1) {
+        sum = sum + i;
+    }
+
+    // Print sum (manual conversion for now)
+    if (sum == 45) {
+        print(['S','u','m',' ','i','s',' ','4','5','\n']);
+    }
+}
+            </textarea>
+            <button onclick="runCode()">Run</button>
+        </div>
+        <div class="column">
+            <h2>Build Status</h2>
+            <div id="logs"
+                style="background: #252526; border: 1px solid #3e3e42; padding: 10px; margin-bottom: 20px; color: #888; font-size: 12px; height: 60px; overflow: auto;">
+            </div>
+            <h2>Output</h2>
+            <div id="output"></div>
+        </div>
+    </div>
+
+    <script>
+        async function runCode() {
+            const code = document.getElementById('code').value;
+            const outputDiv = document.getElementById('output');
+            const logsDiv = document.getElementById('logs');
+
+            outputDiv.textContent = 'Running...';
+            logsDiv.textContent = 'Building...';
+
+            try {
+                const response = await fetch('/run', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code })
+                });
+                const data = await response.json();
+                outputDiv.textContent = data.output;
+                logsDiv.textContent = data.logs || 'No build logs';
+            } catch (err) {
+                outputDiv.textContent = 'Error: ' + err.message;
+                logsDiv.textContent = '';
+            }
+        }
+    </script>
+</body>
+
+</html>

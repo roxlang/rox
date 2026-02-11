@@ -85,7 +85,12 @@ void cmd_run(const std::string& inputPath) {
     }
     std::string binaryPath = ccPath.substr(0, ccPath.size() - 3);
 
-    std::string cmd = "./" + binaryPath;
+    std::string cmd;
+    if (binaryPath.size() > 0 && binaryPath[0] == '/') {
+        cmd = binaryPath;
+    } else {
+        cmd = "./" + binaryPath;
+    }
     int ret = system(cmd.c_str());
     if (ret != 0) {
         // Program failed or exit code != 0
