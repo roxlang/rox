@@ -199,6 +199,45 @@
       <li><code>getValue(rox_result[T]) -> T</code></li>
     </ul>
 
+    <h3>Math Library</h3>
+    <h4>num32</h4>
+    <ul>
+      <li><code>num32_abs(n)</code></li>
+      <li><code>num32_min(a, b)</code></li>
+      <li><code>num32_max(a, b)</code></li>
+      <li><code>num32_pow(base, exp) -> rox_result[num32]</code></li>
+    </ul>
+
+    <h4>num</h4>
+    <ul>
+      <li><code>num_abs(n)</code></li>
+      <li><code>num_min(a, b)</code></li>
+      <li><code>num_max(a, b)</code></li>
+      <li><code>num_pow(base, exp) -> rox_result[num]</code></li>
+    </ul>
+
+    <h4>float</h4>
+    <ul>
+      <li><code>float_abs(n)</code></li>
+      <li><code>float_min(a, b)</code></li>
+      <li><code>float_max(a, b)</code></li>
+      <li><code>float_pow(base, exp)</code></li>
+      <li><code>float_sqrt(n) -> rox_result[float]</code></li>
+      <li><code>float_sin(n)</code></li>
+      <li><code>float_cos(n)</code></li>
+      <li><code>float_tan(n)</code></li>
+      <li><code>float_log(n) -> rox_result[float]</code></li>
+      <li><code>float_exp(n)</code></li>
+      <li><code>float_floor(n)</code></li>
+      <li><code>float_ceil(n)</code></li>
+    </ul>
+
+    <h4>Constants</h4>
+    <ul>
+      <li><code>pi</code> (float)</li>
+      <li><code>e</code> (float)</li>
+    </ul>
+
     <h2>Error Model</h2>
     <p>ROX does not use exceptions. Errors are explicit values:</p>
     <pre><code>rox_result[num] r = nums.at(i);
