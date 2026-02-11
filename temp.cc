@@ -65,13 +65,14 @@ RoxString rox_str(const char* s) {
 }
 
 // I/O
-None print(const std::vector<char>& s) {
-    for (char c : s) std::cout << c;
-    return none;
+std::ostream& operator<<(std::ostream& os, const std::vector<char>& s) {
+    for (char c : s) os << c;
+    return os;
 }
 
-None print(const RoxString& s) {
-    std::cout << s.val;
+template<typename... Args>
+None print(const Args&... args) {
+    ((std::cout << args), ...);
     return none;
 }
 
@@ -144,8 +145,7 @@ int main() {
     (sum = (sum + i));
   }
   if ((sum == ((num)45)))   {
-    print(rox_str("Sum is: "), numToString(sum));
-    print(numToString(sum));
+    print(rox_str("Sum is: "), rox_str("\n"), numToString(sum));
   }
   return 0;
 }

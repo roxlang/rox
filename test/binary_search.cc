@@ -65,13 +65,14 @@ RoxString rox_str(const char* s) {
 }
 
 // I/O
-None print(const std::vector<char>& s) {
-    for (char c : s) std::cout << c;
-    return none;
+std::ostream& operator<<(std::ostream& os, const std::vector<char>& s) {
+    for (char c : s) os << c;
+    return os;
 }
 
-None print(const RoxString& s) {
-    std::cout << s.val;
+template<typename... Args>
+None print(const Args&... args) {
+    ((std::cout << args), ...);
     return none;
 }
 

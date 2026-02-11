@@ -138,65 +138,30 @@ std::vector<char> listToString(const std::vector<T>& list) {
 
 // End Runtime
 
-bool contains(std::vector<char> items, char c) {
-  num n = items.size();
-  for (auto i = ((num)0); i < n; i += ((num)1))   {
-    rox_result<char> r = rox_at(items, i);
-    if (isOk(r))     {
-      char val = getValue(r);
-      if ((val == c))       {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-num length_of_longest_substring(std::vector<char> items) {
-  num n = items.size();
-  num max_len = ((num)0);
-  num left = ((num)0);
-  for (auto k = ((num)0); k < n; k += ((num)1))   {
-    rox_result<char> r_k = rox_at(items, k);
-    if ((!isOk(r_k)))     {
-      return ((num)0);
-    }
-    char c = getValue(r_k);
-    bool found = false;
-    num found_index = ((num)0);
-    for (auto j = left; j < k; j += ((num)1))     {
-      rox_result<char> r_j = rox_at(items, j);
-      if (isOk(r_j))       {
-        char char_j = getValue(r_j);
-        if ((char_j == c))         {
-          (found = true);
-          (found_index = j);
-        }
-      }
-    }
-    if (found)     {
-      if ((found_index >= left))       {
-        (left = (found_index + ((num)1)));
-      }
-    }
-    num current_len = ((k - left) + ((num)1));
-    if ((current_len > max_len))     {
-      (max_len = current_len);
-    }
-  }
-  return max_len;
-}
 int main() {
-  std::vector<char> s1 = std::vector<char>{'a', 'b', 'c', 'a', 'b', 'c', 'b', 'b'};
-  if ((length_of_longest_substring(s1) == ((num)3)))   {
-    std::vector<char> s2 = std::vector<char>{'b', 'b', 'b', 'b', 'b'};
-    if ((length_of_longest_substring(s2) == ((num)1)))     {
-      std::vector<char> s3 = std::vector<char>{'p', 'w', 'w', 'k', 'e', 'w'};
-      if ((length_of_longest_substring(s3) == ((num)3)))       {
-        print(rox_to_list(rox_str("Longest Substring: Passed\n")));
-        return 0;
-      }
-    }
+  RoxString s = rox_str("Hello");
+  if ((s.size() != ((num)5)))   {
+    print(rox_str("Size Fail\n"));
+    return 0;
   }
-  print(rox_to_list(rox_str("Longest Substring: Failed\n")));
+  rox_result<char> r = rox_at(s, ((num)1));
+  if ((!isOk(r)))   {
+    print(rox_str("At Fail 1\n"));
+    return 0;
+  }
+  if ((getValue(r) != 'e'))   {
+    print(rox_str("At Fail 2\n"));
+    return 0;
+  }
+  if ((s == rox_str("Hello")))   {
+  }
+  else   {
+    print(rox_str("Eq Fail\n"));
+    return 0;
+  }
+  print(s);
+  print(rox_str("\n"));
+  print(rox_str("Variadic"), rox_str(" "), rox_str("Print"), rox_str(" "), rox_str("Works\n"));
+  print(rox_str("Passed\n"));
   return 0;
 }

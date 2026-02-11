@@ -35,6 +35,7 @@ run_test "test/valid_parentheses.rox"
 run_test "test/binary_search.rox"
 run_test "test/max_subarray.rox"
 run_test "test/longest_substring.rox"
+run_test "test/test_string.rox"
 
 echo "--------------------------------"
 if [ $fail_count -eq 0 ]; then
