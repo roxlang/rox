@@ -1,24 +1,18 @@
 // Valid Parentheses
 // Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
 
-function is_valid(s <list[char]>) -> bool {
-    // Workaround: Initialize with one element and pop it to fix C++ CTAD for empty vector
-    let stack <list[char]> = ['a'];
-    stack.pop();
+function is_valid(list[char] s) -> bool {
+    list[char] stack = [];
 
-    let n <num> = s.size();
+    num n = s.size();
 
     repeat i in range(0, n, 1) {
-        let r <rox_result[char]> = s.at(i);
+        rox_result[char] r = s.at(i);
         // If error, return false (invalid state)
-        if (isOk(r) == false) { return false; }
-        let c <char> = getValue(r);
+        if (not isOk(r)) { return false; }
+        char c = getValue(r);
 
-        if (c == '(') {
-            stack.append(c);
-        } else if (c == '{') {
-            stack.append(c);
-        } else if (c == '[') {
+        if (c == '(' or c == '{' or c == '[') {
             stack.append(c);
         } else {
             // Closing bracket
@@ -26,11 +20,10 @@ function is_valid(s <list[char]>) -> bool {
                 return false;
             }
 
-            // stack.size() is num. 1 is num.
-            let last_idx <num> = stack.size() - 1;
-            let rt <rox_result[char]> = stack.at(last_idx);
-            if (isOk(rt) == false) { return false; }
-            let top <char> = getValue(rt);
+            num last_idx = stack.size() - 1;
+            rox_result[char] rt = stack.at(last_idx);
+            if (not isOk(rt)) { return false; }
+            char top = getValue(rt);
 
             stack.pop();
 
@@ -50,15 +43,11 @@ function is_valid(s <list[char]>) -> bool {
 function main() -> none {
     // ROX strings are list[char]. String literals are converted.
 
-    if (is_valid(['(', ')']) == true) {
-        if (is_valid(['(', ')', '[', ']', '{', '}']) == true) {
-            if (is_valid(['(', ']']) == false) {
-                 if (is_valid(['(', '[', ')', ']']) == false) {
-                      if (is_valid(['{', '[', ']', '}']) == true) {
-                          print(['V','a','l','i','d',' ','P','a','r','e','n','t','h','e','s','e','s',':',' ','P','a','s','s','e','d','\n']);
-                          return none;
-                      }
-                 }
+    if (is_valid(['(', ')']) and is_valid(['(', ')', '[', ']', '{', '}'])) {
+        if (not is_valid(['(', ']']) and not is_valid(['(', '[', ')', ']'])) {
+            if (is_valid(['{', '[', ']', '}'])) {
+                print(['V','a','l','i','d',' ','P','a','r','e','n','t','h','e','s','e','s',':',' ','P','a','s','s','e','d','\n']);
+                return none;
             }
         }
     }

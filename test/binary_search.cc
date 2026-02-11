@@ -75,6 +75,31 @@ rox_result<T> rox_mod(T a, T b) {
 }
 
 num32 num32_abs(num32 x) { return std::abs(x); }
+std::vector<char> numToString(num n) {
+    std::string s = std::to_string(n);
+    return std::vector<char>(s.begin(), s.end());
+}
+
+std::vector<char> charToString(char c) {
+    return {c};
+}
+
+std::string any_to_string(num n) { return std::to_string(n); }
+std::string any_to_string(int n) { return std::to_string(n); }
+std::string any_to_string(char c) { return std::string(1, c); }
+std::string any_to_string(bool b) { return b ? "true" : "false"; }
+
+template <typename T>
+std::vector<char> listToString(const std::vector<T>& list) {
+    std::string s = "[";
+    for (size_t i = 0; i < list.size(); ++i) {
+        if (i > 0) s += ", ";
+        s += any_to_string(list[i]);
+    }
+    s += "]";
+    return std::vector<char>(s.begin(), s.end());
+}
+
 
 // End Runtime
 
@@ -84,13 +109,13 @@ num binary_search_recursive(std::vector<num32> nums, num32 target, num low, num 
   }
   num diff = (high - low);
   rox_result<num> r_div = rox_div(diff, ((num)2));
-  if ((isOk(r_div) == false))   {
+  if ((!isOk(r_div)))   {
     return (-((num)1));
   }
   num half = getValue(r_div);
   num mid = (low + half);
   rox_result<num32> r = rox_at(nums, mid);
-  if ((isOk(r) == false))   {
+  if ((!isOk(r)))   {
     return (-((num)1));
   }
   num32 midVal = getValue(r);
@@ -112,7 +137,7 @@ num search(std::vector<num32> nums, num32 target) {
   return binary_search_recursive(nums, target, ((num)0), (n - ((num)1)));
 }
 int main() {
-  std::vector<num32> nums = std::vector{(-1), 0, 3, 5, 9, 12};
+  std::vector<num32> nums = std::vector<num32>{(-1), 0, 3, 5, 9, 12};
   if ((search(nums, 9) == ((num)4)))   {
     if ((search(nums, 2) == (-((num)1))))     {
       print(std::vector{'B', 'i', 'n', 'a', 'r', 'y', ' ', 'S', 'e', 'a', 'r', 'c', 'h', ':', ' ', 'P', 'a', 's', 's', 'e', 'd', '\n'});

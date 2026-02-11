@@ -61,19 +61,19 @@ The surface area is intentionally small and opinionated.
 Two Sum implemented in ROX:
 
 ```rox
-function two_sum(nums <list[num]>, target <num>) -> list[num] {
-    let n <num> = nums.size();
+function two_sum(list[num] nums, num target) -> list[num] {
+    num n = nums.size();
 
     repeat i in range(0, n, 1) {
         repeat j in range(i + 1, n, 1) {
 
-            let r1 <rox_result[num]> = nums.at(i);
+            rox_result[num] r1 = nums.at(i);
             if (not isOk(r1)) { return [-1, -1]; }
-            let v1 <num> = getValue(r1);
+            num v1 = getValue(r1);
 
-            let r2 <rox_result[num]> = nums.at(j);
+            rox_result[num] r2 = nums.at(j);
             if (not isOk(r2)) { return [-1, -1]; }
-            let v2 <num> = getValue(r2);
+            num v2 = getValue(r2);
 
             if (v1 + v2 == target) {
                 return [i, j];
@@ -123,11 +123,11 @@ The language forces clarity — not ceremony.
 ROX does not use exceptions. Errors are explicit values:
 
 ```rox
-let r <rox_result[num]> = nums.at(i);
+rox_result[num] r = nums.at(i);
 if (not isOk(r)) {
     return [-1, -1];
 }
-let value <num> = getValue(r);
+num value = getValue(r);
 ```
 
 Nothing throws. Nothing hides.

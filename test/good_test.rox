@@ -1,6 +1,6 @@
 // Valid ROX program
 function main() -> none {
-    let x <num32> = 10n32;
+    num32 x = 10n32;
     print("Hello, world!\n");
     if (x > 5) {
         print("x is greater than 5\n");

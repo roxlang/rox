@@ -1,21 +1,21 @@
 // Two Sum
 // Given nums array and target, return indices of two numbers that add up to target.
 
-function two_sum(nums <list[num32]>, target <num32>) -> list[num] {
-    let n <num> = nums.size();
+function two_sum(list[num32] nums, num32 target) -> list[num] {
+    num n = nums.size();
 
     // i, j are num from range
     repeat i in range(0, n, 1) {
         repeat j in range(i + 1, n, 1) {
 
             // Handle result explicitly
-            let r1 <rox_result[num32]> = nums.at(i);
-            if (isOk(r1) == false) { return [-1, -1]; }
-            let v1 <num32> = getValue(r1);
+            rox_result[num32] r1 = nums.at(i);
+            if (not isOk(r1)) { return [-1, -1]; }
+            num32 v1 = getValue(r1);
 
-            let r2 <rox_result[num32]> = nums.at(j);
-            if (isOk(r2) == false) { return [-1, -1]; }
-            let v2 <num32> = getValue(r2);
+            rox_result[num32] r2 = nums.at(j);
+            if (not isOk(r2)) { return [-1, -1]; }
+            num32 v2 = getValue(r2);
 
             if (v1 + v2 == target) {
                 return [i, j];
@@ -27,15 +27,15 @@ function two_sum(nums <list[num32]>, target <num32>) -> list[num] {
 
 function main() -> none {
     // 2 is num64 by default. 2n32 is num32.
-    let nums <list[num32]> = [2n32, 7n32, 11n32, 15n32];
-    let target <num32> = 9n32;
+    list[num32] nums = [2n32, 7n32, 11n32, 15n32];
+    num32 target = 9n32;
 
-    let result <list[num]> = two_sum(nums, target);
+    list[num] result = two_sum(nums, target);
 
     // We expect [0, 1]
     if (result.size() == 2) {
-        let r0 <rox_result[num]> = result.at(0);
-        let r1 <rox_result[num]> = result.at(1);
+        rox_result[num] r0 = result.at(0);
+        rox_result[num] r1 = result.at(1);
 
         if (isOk(r0) and isOk(r1)) {
             if (getValue(r0) == 0 and getValue(r1) == 1) {

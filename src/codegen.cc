@@ -333,6 +333,24 @@ void Codegen::genLet(LetStmt* stmt) {
     if (stmt->isConst) out << "const ";
     genType(stmt->type.get());
     out << " " << stmt->name.lexeme << " = ";
+
+    // Optimized handling for ListLiteralExpr to ensure std::vector<T> is explicitly constructed
+    // This fixes issues with empty lists [] where std::vector{} (CTAD) fails.
+    if (auto* listLit = dynamic_cast<ListLiteralExpr*>(stmt->initializer.get())) {
+        if (auto* listType = dynamic_cast<ListType*>(stmt->type.get())) {
+             out << "std::vector<";
+             genType(listType->elementType.get());
+             out << ">{";
+             for (size_t i = 0; i < listLit->elements.size(); ++i) {
+                 if (i > 0) out << ", ";
+                 genExpr(listLit->elements[i].get());
+             }
+             out << "}";
+             out << ";\n";
+             return;
+        }
+    }
+
     genExpr(stmt->initializer.get());
     out << ";\n";
 }
@@ -370,7 +388,11 @@ void Codegen::genBinary(BinaryExpr* expr) {
 }
 
 void Codegen::genUnary(UnaryExpr* expr) {
-    out << "(" << expr->op.lexeme;
+    if (expr->op.type == TokenType::NOT) {
+        out << "(!";
+    } else {
+        out << "(" << expr->op.lexeme;
+    }
     genExpr(expr->right.get());
     out << ")";
 }

@@ -113,14 +113,14 @@
     <p>A dynamically sized array of elements of Type <code>T</code>.</p>
 
     <h3>Declaration</h3>
-    <pre><code>let numbers <list[num]> = [1, 2, 3];
-let chars <list[char]> = ['a', 'b', 'c'];</code></pre>
+    <pre><code>list[num] numbers = [1, 2, 3];
+list[char] chars = ['a', 'b', 'c'];</code></pre>
 
     <h3>Access</h3>
     <p>Access is strictly checked. <code>.at(index)</code> returns a <code>rox_result[T]</code>.</p>
-    <pre><code>let res <rox_result[num]> = numbers.at(0);
+    <pre><code>rox_result[num] res = numbers.at(0);
 if (isOk(res)) {
-    let val <num> = getValue(res);
+    num val = getValue(res);
 }</code></pre>
 
     <h3>Methods</h3>

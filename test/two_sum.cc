@@ -75,6 +75,31 @@ rox_result<T> rox_mod(T a, T b) {
 }
 
 num32 num32_abs(num32 x) { return std::abs(x); }
+std::vector<char> numToString(num n) {
+    std::string s = std::to_string(n);
+    return std::vector<char>(s.begin(), s.end());
+}
+
+std::vector<char> charToString(char c) {
+    return {c};
+}
+
+std::string any_to_string(num n) { return std::to_string(n); }
+std::string any_to_string(int n) { return std::to_string(n); }
+std::string any_to_string(char c) { return std::string(1, c); }
+std::string any_to_string(bool b) { return b ? "true" : "false"; }
+
+template <typename T>
+std::vector<char> listToString(const std::vector<T>& list) {
+    std::string s = "[";
+    for (size_t i = 0; i < list.size(); ++i) {
+        if (i > 0) s += ", ";
+        s += any_to_string(list[i]);
+    }
+    s += "]";
+    return std::vector<char>(s.begin(), s.end());
+}
+
 
 // End Runtime
 
@@ -83,12 +108,12 @@ std::vector<num> two_sum(std::vector<num32> nums, num32 target) {
   for (auto i = ((num)0); i < n; i += ((num)1))   {
     for (auto j = (i + ((num)1)); j < n; j += ((num)1))     {
       rox_result<num32> r1 = rox_at(nums, i);
-      if ((isOk(r1) == false))       {
+      if ((!isOk(r1)))       {
         return std::vector{(-((num)1)), (-((num)1))};
       }
       num32 v1 = getValue(r1);
       rox_result<num32> r2 = rox_at(nums, j);
-      if ((isOk(r2) == false))       {
+      if ((!isOk(r2)))       {
         return std::vector{(-((num)1)), (-((num)1))};
       }
       num32 v2 = getValue(r2);
@@ -100,7 +125,7 @@ std::vector<num> two_sum(std::vector<num32> nums, num32 target) {
   return std::vector{(-((num)1)), (-((num)1))};
 }
 int main() {
-  std::vector<num32> nums = std::vector{2, 7, 11, 15};
+  std::vector<num32> nums = std::vector<num32>{2, 7, 11, 15};
   num32 target = 9;
   std::vector<num> result = two_sum(nums, target);
   if ((result.size() == ((num)2)))   {

@@ -75,20 +75,45 @@ rox_result<T> rox_mod(T a, T b) {
 }
 
 num32 num32_abs(num32 x) { return std::abs(x); }
+std::vector<char> numToString(num n) {
+    std::string s = std::to_string(n);
+    return std::vector<char>(s.begin(), s.end());
+}
+
+std::vector<char> charToString(char c) {
+    return {c};
+}
+
+std::string any_to_string(num n) { return std::to_string(n); }
+std::string any_to_string(int n) { return std::to_string(n); }
+std::string any_to_string(char c) { return std::string(1, c); }
+std::string any_to_string(bool b) { return b ? "true" : "false"; }
+
+template <typename T>
+std::vector<char> listToString(const std::vector<T>& list) {
+    std::string s = "[";
+    for (size_t i = 0; i < list.size(); ++i) {
+        if (i > 0) s += ", ";
+        s += any_to_string(list[i]);
+    }
+    s += "]";
+    return std::vector<char>(s.begin(), s.end());
+}
+
 
 // End Runtime
 
 num32 max_sub_array(std::vector<num32> nums) {
   num n = nums.size();
   rox_result<num32> r0 = rox_at(nums, ((num)0));
-  if ((isOk(r0) == false))   {
+  if ((!isOk(r0)))   {
     return 0;
   }
   num32 max_so_far = getValue(r0);
   num32 current_max = max_so_far;
   for (auto i = ((num)1); i < n; i += ((num)1))   {
     rox_result<num32> r = rox_at(nums, i);
-    if ((isOk(r) == false))     {
+    if ((!isOk(r)))     {
       return 0;
     }
     num32 x = getValue(r);
@@ -106,7 +131,7 @@ num32 max_sub_array(std::vector<num32> nums) {
   return max_so_far;
 }
 int main() {
-  std::vector<num32> nums = std::vector{(-2), 1, (-3), 4, (-1), 2, 1, (-5), 4};
+  std::vector<num32> nums = std::vector<num32>{(-2), 1, (-3), 4, (-1), 2, 1, (-5), 4};
   num32 res = max_sub_array(nums);
   if ((res == 6))   {
     print(std::vector{'M', 'a', 'x', 'i', 'm', 'u', 'm', ' ', 'S', 'u', 'b', 'a', 'r', 'r', 'a', 'y', ':', ' ', 'P', 'a', 's', 's', 'e', 'd', '\n'});

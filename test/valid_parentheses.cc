@@ -75,26 +75,44 @@ rox_result<T> rox_mod(T a, T b) {
 }
 
 num32 num32_abs(num32 x) { return std::abs(x); }
+std::vector<char> numToString(num n) {
+    std::string s = std::to_string(n);
+    return std::vector<char>(s.begin(), s.end());
+}
+
+std::vector<char> charToString(char c) {
+    return {c};
+}
+
+std::string any_to_string(num n) { return std::to_string(n); }
+std::string any_to_string(int n) { return std::to_string(n); }
+std::string any_to_string(char c) { return std::string(1, c); }
+std::string any_to_string(bool b) { return b ? "true" : "false"; }
+
+template <typename T>
+std::vector<char> listToString(const std::vector<T>& list) {
+    std::string s = "[";
+    for (size_t i = 0; i < list.size(); ++i) {
+        if (i > 0) s += ", ";
+        s += any_to_string(list[i]);
+    }
+    s += "]";
+    return std::vector<char>(s.begin(), s.end());
+}
+
 
 // End Runtime
 
 bool is_valid(std::vector<char> s) {
-  std::vector<char> stack = std::vector{'a'};
-  stack.pop_back();
+  std::vector<char> stack = std::vector<char>{};
   num n = s.size();
   for (auto i = ((num)0); i < n; i += ((num)1))   {
     rox_result<char> r = rox_at(s, i);
-    if ((isOk(r) == false))     {
+    if ((!isOk(r)))     {
       return false;
     }
     char c = getValue(r);
-    if ((c == '('))     {
-      stack.push_back(c);
-    }
-    else     if ((c == '{'))     {
-      stack.push_back(c);
-    }
-    else     if ((c == '['))     {
+    if ((((c == '(') || (c == '{')) || (c == '[')))     {
       stack.push_back(c);
     }
     else     {
@@ -103,7 +121,7 @@ bool is_valid(std::vector<char> s) {
       }
       num last_idx = (stack.size() - ((num)1));
       rox_result<char> rt = rox_at(stack, last_idx);
-      if ((isOk(rt) == false))       {
+      if ((!isOk(rt)))       {
         return false;
       }
       char top = getValue(rt);
@@ -128,15 +146,11 @@ bool is_valid(std::vector<char> s) {
   return (stack.size() == ((num)0));
 }
 int main() {
-  if ((is_valid(std::vector{'(', ')'}) == true))   {
-    if ((is_valid(std::vector{'(', ')', '[', ']', '{', '}'}) == true))     {
-      if ((is_valid(std::vector{'(', ']'}) == false))       {
-        if ((is_valid(std::vector{'(', '[', ')', ']'}) == false))         {
-          if ((is_valid(std::vector{'{', '[', ']', '}'}) == true))           {
-            print(std::vector{'V', 'a', 'l', 'i', 'd', ' ', 'P', 'a', 'r', 'e', 'n', 't', 'h', 'e', 's', 'e', 's', ':', ' ', 'P', 'a', 's', 's', 'e', 'd', '\n'});
-            return 0;
-          }
-        }
+  if ((is_valid(std::vector{'(', ')'}) && is_valid(std::vector{'(', ')', '[', ']', '{', '}'})))   {
+    if (((!is_valid(std::vector{'(', ']'})) && (!is_valid(std::vector{'(', '[', ')', ']'}))))     {
+      if (is_valid(std::vector{'{', '[', ']', '}'}))       {
+        print(std::vector{'V', 'a', 'l', 'i', 'd', ' ', 'P', 'a', 'r', 'e', 'n', 't', 'h', 'e', 's', 'e', 's', ':', ' ', 'P', 'a', 's', 's', 'e', 'd', '\n'});
+        return 0;
       }
     }
   }

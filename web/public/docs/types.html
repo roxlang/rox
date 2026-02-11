@@ -113,21 +113,21 @@
 
     <h3>num <span class="type-tag">64-bit Signed Integer</span></h3>
     <p>The default integer type. Used for most arithmetic and list indexing.</p>
-    <pre><code>let x <num> = 42;
-let y <num> = -100;</code></pre>
+    <pre><code>num x = 42;
+num y = -100;</code></pre>
 
     <h3>num32 <span class="type-tag">32-bit Signed Integer</span></h3>
     <p>A smaller integer type, useful for compatibility or memory optimization.</p>
-    <pre><code>let i <num32> = 10n; // 'n' suffix denotes num32 literal</code></pre>
+    <pre><code>num32 i = 10n; // 'n' suffix denotes num32 literal</code></pre>
 
     <h3>bool <span class="type-tag">Boolean</span></h3>
     <p>Values: <code>true</code> or <code>false</code>.</p>
-    <pre><code>let is_valid <bool> = true;
+    <pre><code>bool is_valid = true;
 if (is_valid) { ... }</code></pre>
 
     <h3>char <span class="type-tag">Character</span></h3>
     <p>Represents a single ASCII character.</p>
-    <pre><code>let c <char> = 'A';</code></pre>
+    <pre><code>char c = 'A';</code></pre>
 
     <h3>none <span class="type-tag">Unit Type</span></h3>
     <p>Represents the absence of a value (similar to <code>void</code> in C++). Used as the return type for functions
@@ -143,10 +143,10 @@ if (is_valid) { ... }</code></pre>
     <p>You must check if the result is valid using <code>isOk()</code> before extracting the value with
       <code>getValue()</code>.
     </p>
-    <pre><code>let result <rox_result[num]> = list.at(5);
+    <pre><code>rox_result[num] result = list.at(5);
 
 if (isOk(result)) {
-    let val <num> = getValue(result);
+    num val = getValue(result);
 } else {
     // Handle error
 }</code></pre>

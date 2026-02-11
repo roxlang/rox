@@ -15,11 +15,17 @@ std::vector<std::unique_ptr<Stmt>> Parser::parse() {
 
 std::unique_ptr<Stmt> Parser::declaration() {
     if (match({TokenType::FUNCTION})) return functionDeclaration("function");
-    if (match({TokenType::LET})) return varDeclaration();
-    if (match({TokenType::CONST})) return varDeclaration(); // reused, check token type in method? No, previous() gives token.
-    // Wait, varDeclaration needs to know if it was let or const.
-    // I need to peek or consume inside varDeclaration?
-    // match consumes. So previous() is the keyword.
+    if (match({TokenType::FUNCTION})) return functionDeclaration("function");
+    if (match({TokenType::CONST})) return varDeclaration();
+
+    // Check for variable declaration starting with a type
+    if (check(TokenType::TYPE_NUM32) || check(TokenType::TYPE_NUM) ||
+        check(TokenType::TYPE_FLOAT) || check(TokenType::TYPE_BOOL) ||
+        check(TokenType::TYPE_CHAR) || check(TokenType::TYPE_LIST) ||
+        check(TokenType::TYPE_DICT) || check(TokenType::TYPE_ROX_RESULT) ||
+        check(TokenType::NONE)) {
+        return varDeclaration();
+    }
 
     return statement();
 }
@@ -31,13 +37,13 @@ std::unique_ptr<Stmt> Parser::functionDeclaration(std::string kind) {
 
     std::vector<FunctionStmt::Param> params;
     if (!check(TokenType::RIGHT_PAREN)) {
+    if (!check(TokenType::RIGHT_PAREN)) {
         do {
-            Token paramName = consume(TokenType::IDENTIFIER, "Expect parameter name.");
-            consume(TokenType::LESS, "Expect '<' after parameter name.");
             std::unique_ptr<Type> paramType = type();
-            consume(TokenType::GREATER, "Expect '>' after parameter type.");
+            Token paramName = consume(TokenType::IDENTIFIER, "Expect parameter name.");
             params.push_back({paramName, std::move(paramType)});
         } while (match({TokenType::COMMA}));
+    }
     }
     consume(TokenType::RIGHT_PAREN, "Expect ')' after parameters.");
 
@@ -53,14 +59,24 @@ std::unique_ptr<Stmt> Parser::functionDeclaration(std::string kind) {
 }
 
 std::unique_ptr<Stmt> Parser::varDeclaration() {
-    Token keyword = previous();
-    bool isConst = (keyword.type == TokenType::CONST);
+    bool isConst = false;
+    // blocked by previous() check in caller?
+    // If we matched CONST, previous() is CONST.
+    // If we matched TYPE, previous() is ... wait, we used check() for TYPE in caller.
+    // But for CONST we utilized match(), so previous is CONST.
+
+    if (previous().type == TokenType::CONST) {
+        isConst = true;
+    }
+
+    // Parse Type
+    // If it was const, we are now at the type.
+    // If it was not const, we are at the type (via check in caller).
+    std::unique_ptr<Type> varType = type();
 
     Token name = consume(TokenType::IDENTIFIER, "Expect variable name.");
 
-    consume(TokenType::LESS, "Expect '<' after variable name.");
-    std::unique_ptr<Type> varType = type();
-    consume(TokenType::GREATER, "Expect '>' after variable type.");
+    // Removed < > around type.
 
     consume(TokenType::EQUAL, "Expect '=' after variable declaration.");
     std::unique_ptr<Expr> initializer = expression();
@@ -201,6 +217,16 @@ std::unique_ptr<Expr> Parser::equality() {
     while (match({TokenType::BANG_EQUAL, TokenType::EQUAL_EQUAL})) {
         Token op = previous();
         std::unique_ptr<Expr> right = comparison();
+
+        // Ban "== true" and "== false"
+        if (op.type == TokenType::EQUAL_EQUAL) {
+            if (auto* lit = dynamic_cast<LiteralExpr*>(right.get())) {
+                if (lit->value.type == TokenType::TRUE || lit->value.type == TokenType::FALSE) {
+                    error(op, "Invalid comparison. Do not use '== true' or '== false'. Use 'if (cond)' or 'if (not cond)'.");
+                }
+            }
+        }
+
         expr = std::make_unique<BinaryExpr>(std::move(expr), op, std::move(right));
     }
 

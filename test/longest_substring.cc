@@ -75,6 +75,31 @@ rox_result<T> rox_mod(T a, T b) {
 }
 
 num32 num32_abs(num32 x) { return std::abs(x); }
+std::vector<char> numToString(num n) {
+    std::string s = std::to_string(n);
+    return std::vector<char>(s.begin(), s.end());
+}
+
+std::vector<char> charToString(char c) {
+    return {c};
+}
+
+std::string any_to_string(num n) { return std::to_string(n); }
+std::string any_to_string(int n) { return std::to_string(n); }
+std::string any_to_string(char c) { return std::string(1, c); }
+std::string any_to_string(bool b) { return b ? "true" : "false"; }
+
+template <typename T>
+std::vector<char> listToString(const std::vector<T>& list) {
+    std::string s = "[";
+    for (size_t i = 0; i < list.size(); ++i) {
+        if (i > 0) s += ", ";
+        s += any_to_string(list[i]);
+    }
+    s += "]";
+    return std::vector<char>(s.begin(), s.end());
+}
+
 
 // End Runtime
 
@@ -97,7 +122,7 @@ num length_of_longest_substring(std::vector<char> items) {
   num left = ((num)0);
   for (auto k = ((num)0); k < n; k += ((num)1))   {
     rox_result<char> r_k = rox_at(items, k);
-    if ((isOk(r_k) == false))     {
+    if ((!isOk(r_k)))     {
       return ((num)0);
     }
     char c = getValue(r_k);
@@ -113,7 +138,7 @@ num length_of_longest_substring(std::vector<char> items) {
         }
       }
     }
-    if ((found == true))     {
+    if (found)     {
       if ((found_index >= left))       {
         (left = (found_index + ((num)1)));
       }
@@ -126,11 +151,11 @@ num length_of_longest_substring(std::vector<char> items) {
   return max_len;
 }
 int main() {
-  std::vector<char> s1 = std::vector{'a', 'b', 'c', 'a', 'b', 'c', 'b', 'b'};
+  std::vector<char> s1 = std::vector<char>{'a', 'b', 'c', 'a', 'b', 'c', 'b', 'b'};
   if ((length_of_longest_substring(s1) == ((num)3)))   {
-    std::vector<char> s2 = std::vector{'b', 'b', 'b', 'b', 'b'};
+    std::vector<char> s2 = std::vector<char>{'b', 'b', 'b', 'b', 'b'};
     if ((length_of_longest_substring(s2) == ((num)1)))     {
-      std::vector<char> s3 = std::vector{'p', 'w', 'w', 'k', 'e', 'w'};
+      std::vector<char> s3 = std::vector<char>{'p', 'w', 'w', 'k', 'e', 'w'};
       if ((length_of_longest_substring(s3) == ((num)3)))       {
         print(std::vector{'L', 'o', 'n', 'g', 'e', 's', 't', ' ', 'S', 'u', 'b', 's', 't', 'r', 'i', 'n', 'g', ':', ' ', 'P', 'a', 's', 's', 'e', 'd', '\n'});
         return 0;

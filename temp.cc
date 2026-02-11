@@ -75,16 +75,41 @@ rox_result<T> rox_mod(T a, T b) {
 }
 
 num32 num32_abs(num32 x) { return std::abs(x); }
+std::vector<char> numToString(num n) {
+    std::string s = std::to_string(n);
+    return std::vector<char>(s.begin(), s.end());
+}
+
+std::vector<char> charToString(char c) {
+    return {c};
+}
+
+std::string any_to_string(num n) { return std::to_string(n); }
+std::string any_to_string(int n) { return std::to_string(n); }
+std::string any_to_string(char c) { return std::string(1, c); }
+std::string any_to_string(bool b) { return b ? "true" : "false"; }
+
+template <typename T>
+std::vector<char> listToString(const std::vector<T>& list) {
+    std::string s = "[";
+    for (size_t i = 0; i < list.size(); ++i) {
+        if (i > 0) s += ", ";
+        s += any_to_string(list[i]);
+    }
+    s += "]";
+    return std::vector<char>(s.begin(), s.end());
+}
+
 
 // End Runtime
 
 int main() {
   print(std::vector{'H', 'e', 'l', 'l', 'o', ' ', 'R', 'O', 'X', '!', '\n'});
-  num sum = 0LL;
-  for (auto i = 0LL; i < 10LL; i += 1LL)   {
+  num sum = ((num)0);
+  for (auto i = ((num)0); i < ((num)10); i += ((num)1))   {
     (sum = (sum + i));
   }
-  if ((sum == 45LL))   {
+  if ((sum == ((num)45)))   {
     print(std::vector{'S', 'u', 'm', ' ', 'i', 's', ' ', '4', '5', '\n'});
   }
   return 0;
