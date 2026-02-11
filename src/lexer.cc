@@ -18,9 +18,6 @@ static const std::map<std::string, TokenType> keywords = {
     {"or", TokenType::OR},
     {"print", TokenType::PRINT},
     {"read_line", TokenType::READ_LINE},
-    // Actually built-ins are just available in scope.
-    // But keywords list in `instruction.md` has `and`, `or`, etc.
-    // Let's stick to the list in `token.h` which I derived.
     {"return", TokenType::RETURN},
     {"true", TokenType::TRUE},
     {"while", TokenType::WHILE},
@@ -35,7 +32,7 @@ static const std::map<std::string, TokenType> keywords = {
     {"list", TokenType::TYPE_LIST},
     {"dictionary", TokenType::TYPE_DICT},
     {"string", TokenType::TYPE_STRING},
-    {"rox_result", TokenType::TYPE_ROX_RESULT}, // New
+    {"rox_result", TokenType::TYPE_ROX_RESULT}, // TODO: move to roxResult
 };
 
 Lexer::Lexer(const std::string& source) : source(source) {}

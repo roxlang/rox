@@ -177,47 +177,41 @@ std::vector<char> listToString(const std::vector<T>& list) {
 
 // End Runtime
 
-num binary_search_recursive(std::vector<num32> nums, num32 target, num low, num high) {
-  if ((low > high))   {
-    return (-((num)1));
-  }
-  num diff = (high - low);
-  rox_result<num> r_div = rox_div(diff, ((num)2));
-  if ((!isOk(r_div)))   {
-    return (-((num)1));
-  }
-  num half = getValue(r_div);
-  num mid = (low + half);
-  rox_result<num32> r = rox_at(nums, mid);
-  if ((!isOk(r)))   {
-    return (-((num)1));
-  }
-  num32 midVal = getValue(r);
-  if ((midVal == target))   {
-    return mid;
-  }
-  else   if ((midVal < target))   {
-    return binary_search_recursive(nums, target, (mid + ((num)1)), high);
+int main() {
+  print(numToString(num32_abs((-5))));
+  print(numToString(num32_min(10, 5)));
+  print(numToString(num32_max(10, 5)));
+  rox_result<num32> p32 = num32_pow(2, 3);
+  if (isOk(p32))   {
+    print(numToString(getValue(p32)));
   }
   else   {
-    return binary_search_recursive(nums, target, low, (mid - ((num)1)));
+    print(any_to_string(rox_str("Error in num32_pow")));
   }
-}
-num search(std::vector<num32> nums, num32 target) {
-  num n = nums.size();
-  if ((n == ((num)0)))   {
-    return (-((num)1));
+  print(numToString(num_abs((-((num)5)))));
+  print(numToString(num_min(((num)10), ((num)5))));
+  print(numToString(num_max(((num)10), ((num)5))));
+  rox_result<num> p64 = num_pow(((num)2), ((num)3));
+  if (isOk(p64))   {
+    print(numToString(getValue(p64)));
   }
-  return binary_search_recursive(nums, target, ((num)0), (n - ((num)1)));
-}
-int main() {
-  std::vector<num32> nums = std::vector<num32>{(-1), 0, 3, 5, 9, 12};
-  if ((search(nums, 9) == ((num)4)))   {
-    if ((search(nums, 2) == (-((num)1))))     {
-      print(rox_str("Binary Search: Passed\n"));
-      return 0;
-    }
+  print(any_to_string(float_abs((-5.5))));
+  print(any_to_string(float_pow(2.0, 3.0)));
+  rox_result<double> s = float_sqrt(4.0);
+  if (isOk(s))   {
+    print(any_to_string(getValue(s)));
   }
-  print(rox_str("Binary Search: Failed\n"));
+  else   {
+    print(any_to_string(rox_str("Error in sqrt")));
+  }
+  print(any_to_string(float_floor(2.9)));
+  print(any_to_string(float_ceil(2.1)));
+  print(any_to_string(float_exp(1.0)));
+  rox_result<double> l = float_log(e);
+  if (isOk(l))   {
+    print(any_to_string(getValue(l)));
+  }
+  print(any_to_string(float_sin(0.0)));
+  print(any_to_string(float_cos(0.0)));
   return 0;
 }

@@ -120,6 +120,42 @@ The language forces clarity — not ceremony.
 - `isOk(rox_result[T]) -> bool`
 - `getValue(rox_result[T]) -> T`
 
+### Math Library
+
+#### `num32`
+
+- `num32_abs(n)`
+- `num32_min(a, b)`
+- `num32_max(a, b)`
+- `num32_pow(base, exp) -> rox_result[num32]`
+
+#### `num`
+
+- `num_abs(n)`
+- `num_min(a, b)`
+- `num_max(a, b)`
+- `num_pow(base, exp) -> rox_result[num]`
+
+#### `float`
+
+- `float_abs(n)`
+- `float_min(a, b)`
+- `float_max(a, b)`
+- `float_pow(base, exp)`
+- `float_sqrt(n) -> rox_result[float]`
+- `float_sin(n)`
+- `float_cos(n)`
+- `float_tan(n)`
+- `float_log(n) -> rox_result[float]`
+- `float_exp(n)`
+- `float_floor(n)`
+- `float_ceil(n)`
+
+#### Constants
+
+- `pi` (float)
+- `e` (float)
+
 ## Error Model
 
 ROX does not use exceptions. Errors are explicit values:

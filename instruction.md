@@ -24,7 +24,7 @@
 | Type    | C++ Mapping      | Notes            |
 | ------- | ---------------- | ---------------- |
 | `num32` | `int32_t`        | 32-bit signed    |
-| `num64` | `int64_t`        | 64-bit signed    |
+| `num`   | `int64_t`        | 64-bit signed    |
 | `float` | `double`         | IEEE 754         |
 | `bool`  | `bool`           | `true` / `false` |
 | `char`  | `char`           | ASCII            |
@@ -170,7 +170,7 @@ Rules:
 | Type              | `==` `!=` | `<` `<=` `>` `>=` | Notes                           |
 | ----------------- | --------- | ----------------- | ------------------------------- |
 | `num32`           | ✅        | ✅                |                                 |
-| `num64`           | ✅        | ✅                |                                 |
+| `num`             | ✅        | ✅                |                                 |
 | `float`           | ✅        | ✅                |                                 |
 | `char`            | ✅        | ✅                | Maps to ASCII numeric ordering  |
 | `bool`            | ✅        | ❌                | No ordering on booleans         |
@@ -400,14 +400,14 @@ No overloading. Names prefixed by type.
 | `num32_max` | `num32`             |
 | `num32_pow` | `rox_result[num32]` |
 
-### 12.2 `num64`
+### 12.2 `num`
 
 | Function    | Returns             |
 | ----------- | ------------------- |
-| `num64_abs` | `num64`             |
-| `num64_min` | `num64`             |
-| `num64_max` | `num64`             |
-| `num64_pow` | `rox_result[num64]` |
+| `num_abs` | `num`             |
+| `num_min` | `num`             |
+| `num_max` | `num`             |
+| `num_pow` | `rox_result[num]` |
 
 ### 12.3 `float`
 
@@ -441,7 +441,7 @@ Pre-populated in global scope. User cannot redefine built-ins.
 
 | Category            | Names                                                                                                                                                          |
 | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Primitive types     | `num32`, `num64`, `float`, `bool`, `char`, `none`                                                                                                              |
+| Primitive types     | `num32`, `num`, `float`, `bool`, `char`, `none`                                                                                                              |
 | Containers          | `list`, `dictionary`                                                                                                                                           |
 | Result type         | `rox_result[T]`                                                                                                                                                |
 | Result constructors | `ok`, `error`                                                                                                                                                  |
@@ -453,7 +453,7 @@ Pre-populated in global scope. User cannot redefine built-ins.
 | Global constant     | `errors`                                                                                                                                                       |
 | Math constants      | `pi`, `e`                                                                                                                                                      |
 | `num32` math        | `num32_abs`, `num32_min`, `num32_max`, `num32_pow`                                                                                                             |
-| `num64` math        | `num64_abs`, `num64_min`, `num64_max`, `num64_pow`                                                                                                             |
+| `num` math        | `num_abs`, `num_min`, `num_max`, `num_pow`                                                                                                             |
 | `float` math        | `float_abs`, `float_min`, `float_max`, `float_pow`, `float_sqrt`, `float_sin`, `float_cos`, `float_tan`, `float_log`, `float_exp`, `float_floor`, `float_ceil` |
 
 ---

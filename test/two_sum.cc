@@ -110,6 +110,43 @@ rox_result<T> rox_mod(T a, T b) {
 }
 
 num32 num32_abs(num32 x) { return std::abs(x); }
+num32 num32_min(num32 x, num32 y) { return std::min(x, y); }
+num32 num32_max(num32 x, num32 y) { return std::max(x, y); }
+rox_result<num32> num32_pow(num32 base, num32 exp) {
+    if (exp < 0) return error<num32>(10); // invalid_argument
+    num32 res = 1;
+    for (int i = 0; i < exp; ++i) res *= base;
+    return ok(res);
+}
+
+num num_abs(num x) { return std::abs(x); }
+num num_min(num x, num y) { return std::min(x, y); }
+num num_max(num x, num y) { return std::max(x, y); }
+rox_result<num> num_pow(num base, num exp) {
+    if (exp < 0) return error<num>(10); // invalid_argument
+    num res = 1;
+    for (int i = 0; i < exp; ++i) res *= base;
+    return ok(res);
+}
+
+double float_abs(double x) { return std::abs(x); }
+double float_min(double x, double y) { return std::min(x, y); }
+double float_max(double x, double y) { return std::max(x, y); }
+double float_pow(double x, double y) { return std::pow(x, y); }
+rox_result<double> float_sqrt(double x) {
+    if (x < 0) return error<double>(10); // invalid_argument
+    return ok(std::sqrt(x));
+}
+double float_sin(double x) { return std::sin(x); }
+double float_cos(double x) { return std::cos(x); }
+double float_tan(double x) { return std::tan(x); }
+rox_result<double> float_log(double x) {
+    if (x <= 0) return error<double>(10); // invalid_argument
+    return ok(std::log(x));
+}
+double float_exp(double x) { return std::exp(x); }
+double float_floor(double x) { return std::floor(x); }
+double float_ceil(double x) { return std::ceil(x); }
 std::vector<char> numToString(num n) {
     std::string s = std::to_string(n);
     return std::vector<char>(s.begin(), s.end());
@@ -121,8 +158,10 @@ std::vector<char> charToString(char c) {
 
 std::string any_to_string(num n) { return std::to_string(n); }
 std::string any_to_string(int n) { return std::to_string(n); }
+std::string any_to_string(double d) { return std::to_string(d); }
 std::string any_to_string(char c) { return std::string(1, c); }
 std::string any_to_string(bool b) { return b ? "true" : "false"; }
+std::string any_to_string(const RoxString& s) { return s.val; }
 
 template <typename T>
 std::vector<char> listToString(const std::vector<T>& list) {
