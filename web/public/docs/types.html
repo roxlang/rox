@@ -129,6 +129,14 @@ if (is_valid) { ... }</code></pre>
     <p>Represents a single ASCII character.</p>
     <pre><code>char c = 'A';</code></pre>
 
+    <h3>string <span class="type-tag">String</span></h3>
+    <p>Immutable sequence of bytes (UTF-8). Literals use double quotes.</p>
+    <pre><code>string s = "Hello";
+num len = s.size();
+rox_result[char] c = s.at(0);
+list[char] chars = s.toList();
+print(s); // Prints "Hello"</code></pre>
+
     <h3>none <span class="type-tag">Unit Type</span></h3>
     <p>Represents the absence of a value (similar to <code>void</code> in C++). Used as the return type for functions
       that do not return data.</p>

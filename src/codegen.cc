@@ -93,24 +93,55 @@ void Codegen::emitPreamble() {
     out << "const double pi = 3.141592653589793;\n";
     out << "const double e  = 2.718281828459045;\n";
 
-    // I/O
-    out << "None print(const std::vector<char>& s) {\n";
-    out << "    for (char c : s) std::cout << c;\n"; // ROX string is list[char]
-    out << "    return none;\n";
-    out << "}\n";
-
-    // Helper for string literals in C++ to ROX list[char]
-    out << "std::vector<char> rox_str(const char* s) {\n";
-    out << "    std::vector<char> v;\n";
-    out << "    while (*s) v.push_back(*s++);\n";
-    out << "    return v;\n";
+    // Helper for string literals
+    out << "class RoxString {\n";
+    out << "public:\n";
+    out << "    std::string val;\n";
+    out << "    RoxString(const char* s) : val(s) {}\n";
+    out << "    RoxString(std::string s) : val(std::move(s)) {}\n";
+    out << "    RoxString() = default;\n";
+    out << "\n";
+    out << "    num size() const { return (num)val.size(); }\n";
+    out << "    bool operator==(const RoxString& other) const { return val == other.val; }\n";
+    out << "    bool operator!=(const RoxString& other) const { return val != other.val; }\n";
+    out << "};\n";
+    out << "\n";
+    out << "std::ostream& operator<<(std::ostream& os, const RoxString& s) {\n";
+    out << "    return os << s.val;\n";
     out << "}\n";
     out << "\n";
-    // List access
+    out << "RoxString rox_str(const char* s) {\n";
+    out << "    return RoxString(s);\n";
+    out << "}\n";
+    out << "\n";
+    out << "// I/O\n";
+    out << "None print(const std::vector<char>& s) {\n";
+    out << "    for (char c : s) std::cout << c;\n";
+    out << "    return none;\n";
+    out << "}\n";
+    out << "\n";
+    out << "None print(const RoxString& s) {\n";
+    out << "    std::cout << s.val;\n";
+    out << "    return none;\n";
+    out << "}\n";
+    out << "\n";
+    out << "\n";
+    out << "// List access\n";
     out << "template<typename T>\n";
     out << "rox_result<T> rox_at(const std::vector<T>& xs, num i) {\n";
     out << "    if (i < 0 || i >= (num)xs.size()) return error<T>(1); // index_out_of_range\n";
     out << "    return ok(xs[i]);\n";
+    out << "}\n";
+    out << "\n";
+    out << "// String access\n";
+    out << "rox_result<char> rox_at(const RoxString& s, num i) {\n";
+    out << "    if (i < 0 || i >= s.size()) return error<char>(1);\n";
+    out << "    return ok(s.val[i]);\n";
+    out << "}\n";
+    out << "\n";
+    out << "// String to List\n";
+    out << "std::vector<char> rox_to_list(const RoxString& s) {\n";
+    out << "    return std::vector<char>(s.val.begin(), s.val.end());\n";
     out << "}\n";
     out << "\n";
     out << "// Division\n";
@@ -193,6 +224,7 @@ void Codegen::genType(Type* type) {
         else if (s == "float") out << "double";
         else if (s == "bool") out << "bool";
         else if (s == "char") out << "char";
+        else if (s == "string") out << "RoxString";
         else if (s == "none") out << "None";
         else out << s; // Fallback
     } else if (auto* t = dynamic_cast<ListType*>(type)) {
@@ -445,6 +477,10 @@ void Codegen::genMethodCall(MethodCallExpr* expr) {
         genExpr(expr->object.get());
         out << ", ";
         if (!expr->arguments.empty()) genExpr(expr->arguments[0].get());
+        out << ")";
+    } else if (method == "toList") {
+        out << "rox_to_list(";
+        genExpr(expr->object.get());
         out << ")";
     } else if (method == "append") {
         genExpr(expr->object.get());

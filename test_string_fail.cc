@@ -44,6 +44,10 @@ template<typename T>
 rox_result<T> error(num32 code) { return {T{}, code}; }
 const double pi = 3.141592653589793;
 const double e  = 2.718281828459045;
+None print(const std::vector<char>& s) {
+    for (char c : s) std::cout << c;
+    return none;
+}
 class RoxString {
 public:
     std::string val;
@@ -62,17 +66,6 @@ std::ostream& operator<<(std::ostream& os, const RoxString& s) {
 
 RoxString rox_str(const char* s) {
     return RoxString(s);
-}
-
-// I/O
-None print(const std::vector<char>& s) {
-    for (char c : s) std::cout << c;
-    return none;
-}
-
-None print(const RoxString& s) {
-    std::cout << s.val;
-    return none;
 }
 
 
@@ -138,14 +131,6 @@ std::vector<char> listToString(const std::vector<T>& list) {
 // End Runtime
 
 int main() {
-  print(std::vector{'H', 'e', 'l', 'l', 'o', ' ', 'R', 'O', 'X', '!', '\n'});
-  num sum = ((num)0);
-  for (auto i = ((num)0); i < ((num)10); i += ((num)1))   {
-    (sum = (sum + i));
-  }
-  if ((sum == ((num)45)))   {
-    print(rox_str("Sum is: "), numToString(sum));
-    print(numToString(sum));
-  }
+  std::vector<char> l = rox_str("Should fail");
   return 0;
 }

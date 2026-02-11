@@ -1,0 +1,4 @@
+function main() -> none {
+    // This should fail because string literal allows only string type, not list[char]
+    list[char] l = "Should fail";
+}

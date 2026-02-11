@@ -103,6 +103,7 @@ The language forces clarity — not ceremony.
 - `num32` (int32)
 - `bool`
 - `char`
+- `string`
 - `none`
 - `list[T]`
 - `rox_result[T]`
@@ -114,9 +115,10 @@ The language forces clarity — not ceremony.
 
 ### Built-in Functions
 
-- `print`
-- `isOk`
-- `getValue`
+- `print(list[char]) -> none`
+- `print(string) -> none`
+- `isOk(rox_result[T]) -> bool`
+- `getValue(rox_result[T]) -> T`
 
 ## Error Model
 
@@ -131,6 +133,16 @@ num value = getValue(r);
 ```
 
 Nothing throws. Nothing hides.
+
+## Strings
+
+Strings are immutable sequences of UTF-8 bytes.
+
+```rox
+string s = "Hello, World!";
+print(s);
+print("\n");
+```
 
 ## Compilation Model
 

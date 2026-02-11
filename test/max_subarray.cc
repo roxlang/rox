@@ -44,20 +44,54 @@ template<typename T>
 rox_result<T> error(num32 code) { return {T{}, code}; }
 const double pi = 3.141592653589793;
 const double e  = 2.718281828459045;
+class RoxString {
+public:
+    std::string val;
+    RoxString(const char* s) : val(s) {}
+    RoxString(std::string s) : val(std::move(s)) {}
+    RoxString() = default;
+
+    num size() const { return (num)val.size(); }
+    bool operator==(const RoxString& other) const { return val == other.val; }
+    bool operator!=(const RoxString& other) const { return val != other.val; }
+};
+
+std::ostream& operator<<(std::ostream& os, const RoxString& s) {
+    return os << s.val;
+}
+
+RoxString rox_str(const char* s) {
+    return RoxString(s);
+}
+
+// I/O
 None print(const std::vector<char>& s) {
     for (char c : s) std::cout << c;
     return none;
 }
-std::vector<char> rox_str(const char* s) {
-    std::vector<char> v;
-    while (*s) v.push_back(*s++);
-    return v;
+
+None print(const RoxString& s) {
+    std::cout << s.val;
+    return none;
 }
 
+
+// List access
 template<typename T>
 rox_result<T> rox_at(const std::vector<T>& xs, num i) {
     if (i < 0 || i >= (num)xs.size()) return error<T>(1); // index_out_of_range
     return ok(xs[i]);
+}
+
+// String access
+rox_result<char> rox_at(const RoxString& s, num i) {
+    if (i < 0 || i >= s.size()) return error<char>(1);
+    return ok(s.val[i]);
+}
+
+// String to List
+std::vector<char> rox_to_list(const RoxString& s) {
+    return std::vector<char>(s.val.begin(), s.val.end());
 }
 
 // Division
@@ -134,10 +168,10 @@ int main() {
   std::vector<num32> nums = std::vector<num32>{(-2), 1, (-3), 4, (-1), 2, 1, (-5), 4};
   num32 res = max_sub_array(nums);
   if ((res == 6))   {
-    print(std::vector{'M', 'a', 'x', 'i', 'm', 'u', 'm', ' ', 'S', 'u', 'b', 'a', 'r', 'r', 'a', 'y', ':', ' ', 'P', 'a', 's', 's', 'e', 'd', '\n'});
+    print(rox_str("Maximum Subarray: Passed\n"));
   }
   else   {
-    print(std::vector{'M', 'a', 'x', 'i', 'm', 'u', 'm', ' ', 'S', 'u', 'b', 'a', 'r', 'r', 'a', 'y', ':', ' ', 'F', 'a', 'i', 'l', 'e', 'd', '\n'});
+    print(rox_str("Maximum Subarray: Failed\n"));
   }
   return 0;
 }

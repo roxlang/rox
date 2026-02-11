@@ -37,8 +37,8 @@ function main() -> none {
     num32 res = max_sub_array(nums);
 
     if (res == 6n32) {
-        print(['M','a','x','i','m','u','m',' ','S','u','b','a','r','r','a','y',':',' ','P','a','s','s','e','d','\n']);
+        print("Maximum Subarray: Passed\n");
     } else {
-        print(['M','a','x','i','m','u','m',' ','S','u','b','a','r','r','a','y',':',' ','F','a','i','l','e','d','\n']);
+        print("Maximum Subarray: Failed\n");
     }
 }

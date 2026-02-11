@@ -34,6 +34,7 @@ static const std::map<std::string, TokenType> keywords = {
     {"char", TokenType::TYPE_CHAR},
     {"list", TokenType::TYPE_LIST},
     {"dictionary", TokenType::TYPE_DICT},
+    {"string", TokenType::TYPE_STRING},
     {"rox_result", TokenType::TYPE_ROX_RESULT}, // New
 };
 

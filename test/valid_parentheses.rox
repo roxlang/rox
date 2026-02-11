@@ -46,11 +46,11 @@ function main() -> none {
     if (is_valid(['(', ')']) and is_valid(['(', ')', '[', ']', '{', '}'])) {
         if (not is_valid(['(', ']']) and not is_valid(['(', '[', ')', ']'])) {
             if (is_valid(['{', '[', ']', '}'])) {
-                print(['V','a','l','i','d',' ','P','a','r','e','n','t','h','e','s','e','s',':',' ','P','a','s','s','e','d','\n']);
+                print("Valid Parentheses: Passed\n");
                 return none;
             }
         }
     }
 
-    print(['V','a','l','i','d',' ','P','a','r','e','n','t','h','e','s','e','s',':',' ','F','a','i','l','e','d','\n']);
+    print("Valid Parentheses: Failed\n");
 }

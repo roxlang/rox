@@ -21,7 +21,8 @@ std::unique_ptr<Stmt> Parser::declaration() {
     // Check for variable declaration starting with a type
     if (check(TokenType::TYPE_NUM32) || check(TokenType::TYPE_NUM) ||
         check(TokenType::TYPE_FLOAT) || check(TokenType::TYPE_BOOL) ||
-        check(TokenType::TYPE_CHAR) || check(TokenType::TYPE_LIST) ||
+        check(TokenType::TYPE_CHAR) || check(TokenType::TYPE_STRING) ||
+        check(TokenType::TYPE_LIST) ||
         check(TokenType::TYPE_DICT) || check(TokenType::TYPE_ROX_RESULT) ||
         check(TokenType::NONE)) {
         return varDeclaration();
@@ -345,7 +346,7 @@ std::unique_ptr<Expr> Parser::primary() {
 
 std::unique_ptr<Type> Parser::type() {
     if (match({TokenType::TYPE_NUM32, TokenType::TYPE_NUM, TokenType::TYPE_FLOAT,
-               TokenType::TYPE_BOOL, TokenType::TYPE_CHAR, TokenType::NONE})) {
+               TokenType::TYPE_BOOL, TokenType::TYPE_CHAR, TokenType::TYPE_STRING, TokenType::NONE})) {
         return std::make_unique<PrimitiveType>(previous());
     }
 

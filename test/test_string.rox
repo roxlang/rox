@@ -1,0 +1,44 @@
+function main() -> none {
+    // Test declaration and encoding
+    string s = "Hello";
+
+    // Test size
+    if (s.size() != 5) {
+        print(['S','i','z','e',' ','F','a','i','l','\n']);
+        return none;
+    }
+
+    // Test at
+    rox_result[char] r = s.at(1);
+    if (not isOk(r)) {
+        print(['A','t',' ','F','a','i','l',' ','1','\n']);
+        return none;
+    }
+    char c = getValue(r);
+    if (c != 'e') {
+        print(['A','t',' ','F','a','i','l',' ','2','\n']);
+        return none;
+    }
+
+    // Test equality
+    if (s == "Hello") {
+        // Good
+    } else {
+        print(['E','q',' ','F','a','i','l','\n']);
+        return none;
+    }
+
+    if (s != "World") {
+        // Good
+    } else {
+        print(['N','e','q',' ','F','a','i','l','\n']);
+        return none;
+    }
+
+    // Test toList and print
+    list[char] l = s.toList();
+    print(l);
+    print(['\n']);
+
+    print(['P','a','s','s','e','d','\n']);
+}
