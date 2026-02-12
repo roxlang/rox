@@ -1,0 +1,24 @@
+function main() -> none {
+    list[num] numbers = [10, 20, 30];
+
+    // Initial value
+    rox_result[num] val = numbers.at(1);
+    if (isOk(val)) {
+        print("Initial: ", getValue(val), "\n");
+    }
+
+    // Set value
+    numbers.set(1, 99);
+
+    // Verify new value
+    val = numbers.at(1);
+    if (isOk(val)) {
+        print("Updated: ", getValue(val), "\n");
+    }
+
+    // Verify other elements unchanged
+    val = numbers.at(0);
+    if (isOk(val)) {
+        print("Index 0: ", getValue(val), "\n");
+    }
+}

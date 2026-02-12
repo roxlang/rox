@@ -134,6 +134,16 @@ void Codegen::emitPreamble() {
     out << "    return ok(xs[i]);\n";
     out << "}\n";
     out << "\n";
+    out << "// List Set\n";
+    out << "template<typename T>\n";
+    out << "void rox_set(std::vector<T>& xs, num i, T val) {\n";
+    out << "    if (i < 0 || i >= (num)xs.size()) {\n";
+    out << "        std::cerr << \"Error: Index out of bounds in list.set\" << std::endl;\n";
+    out << "        exit(1);\n";
+    out << "    }\n";
+    out << "    xs[i] = val;\n";
+    out << "}\n";
+    out << "\n";
     out << "// String access\n";
     out << "rox_result<char> rox_at(const RoxString& s, num i) {\n";
     out << "    if (i < 0 || i >= s.size()) return error<char>(1);\n";
@@ -244,21 +254,6 @@ void Codegen::emitPreamble() {
     out << "double float_exp(double x) { return std::exp(x); }\n";
     out << "double float_floor(double x) { return std::floor(x); }\n";
     out << "double float_ceil(double x) { return std::ceil(x); }\n";
-
-    out << "std::vector<char> numToString(num n) {\n";
-    out << "    std::string s = std::to_string(n);\n";
-    out << "    return std::vector<char>(s.begin(), s.end());\n";
-    out << "}\n";
-    out << "\n";
-    out << "std::vector<char> floatToString(double d) {\n";
-    out << "    std::string s = std::to_string(d);\n";
-    out << "    // Remove trailing zeros? std::to_string default 6 decimals\n";
-    out << "    return std::vector<char>(s.begin(), s.end());\n";
-    out << "}\n";
-    out << "\n";
-    out << "std::vector<char> charToString(char c) {\n";
-    out << "    return {c};\n";
-    out << "}\n";
     out << "\n";
     out << "\n";
     out << "\n";
