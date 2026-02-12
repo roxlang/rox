@@ -92,12 +92,26 @@ std::unique_ptr<Stmt> Parser::varDeclaration() {
 std::unique_ptr<Stmt> Parser::statement() {
     if (match({TokenType::IF})) return ifStatement();
     if (match({TokenType::REPEAT})) return repeatStatement();
+    if (match({TokenType::BREAK})) return breakStatement();
+    if (match({TokenType::CONTINUE})) return continueStatement();
     if (match({TokenType::RETURN})) return returnStatement();
     if (match({TokenType::LEFT_BRACE})) return std::make_unique<BlockStmt>(block());
 
     std::unique_ptr<Expr> expr = expression();
     consume(TokenType::SEMICOLON, "Expect ';' after expression.");
     return std::make_unique<ExprStmt>(std::move(expr));
+}
+
+std::unique_ptr<Stmt> Parser::breakStatement() {
+    Token keyword = previous();
+    consume(TokenType::SEMICOLON, "Expect ';' after 'break'.");
+    return std::make_unique<BreakStmt>(keyword);
+}
+
+std::unique_ptr<Stmt> Parser::continueStatement() {
+    Token keyword = previous();
+    consume(TokenType::SEMICOLON, "Expect ';' after 'continue'.");
+    return std::make_unique<ContinueStmt>(keyword);
 }
 
 std::unique_ptr<Stmt> Parser::ifStatement() {
@@ -117,17 +131,22 @@ std::unique_ptr<Stmt> Parser::ifStatement() {
 
 std::unique_ptr<Stmt> Parser::repeatStatement() {
     Token iterator = consume(TokenType::IDENTIFIER, "Expect iterator name after 'repeat'.");
-    consume(TokenType::IDENTIFIER, "Expect 'in' after iterator."); // keyword 'in' ? Lexer doesn't have IN?
-    // Wait, 'in' is not in my keyword list in token.h?
-    // Checking token.h... AND, CLASS, ... IF, LET, ...
-    // Checking instruction.md... "repeat i in range..."
-    // I missed 'in' keyword!
-    // I'll treat it as identifier "in" for now, or add it to lexer.
-    // Since I already implemented lexer without 'in', it will be scanned as IDENTIFIER "in".
-    // So consume(IDENTIFIER) and check lexeme?
-    // Or just assume if it's there.
 
-    // Actually, "range" is keyword RANGE in lexer.
+    // Check for 'in' keyword which might be lexed as IDENTIFIER "in"
+    if (check(TokenType::IDENTIFIER) && peek().lexeme == "in") {
+        advance();
+    } else {
+        // Fallback or error if stricter check needed.
+        // For now, let's just assume it's there or handled by next check.
+        // Actually, let's consume it properly if we can.
+        // Since "in" isn't a keyword in token.h (my oversight in checking),
+        // it parses as IDENTIFIER.
+         if (peek().lexeme != "in") {
+             error(peek(), "Expect 'in' after iterator.");
+         }
+         advance();
+    }
+
     consume(TokenType::RANGE, "Expect 'range' after 'in'.");
     consume(TokenType::LEFT_PAREN, "Expect '(' after 'range'.");
 

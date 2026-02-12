@@ -45,6 +45,8 @@ run_test "test/two_sum.rox"
 run_test "test/test_format.rox"
 run_test "test/valid_parentheses.rox"
 run_test "test/test_list_set.rox"
+run_test "test/test_break.rox"
+run_test "test/test_continue.rox"
 
 
 

@@ -20,6 +20,8 @@ static const std::map<std::string, TokenType> keywords = {
     {"repeat", TokenType::REPEAT},
     {"range", TokenType::RANGE},
     {"not", TokenType::NOT},
+    {"break", TokenType::BREAK},
+    {"continue", TokenType::CONTINUE},
     {"num32", TokenType::TYPE_NUM32},
     {"num", TokenType::TYPE_NUM},
     {"float", TokenType::TYPE_FLOAT},

@@ -125,6 +125,16 @@ struct ExprStmt : Stmt {
     ExprStmt(std::unique_ptr<Expr> expression) : expression(std::move(expression)) {}
 };
 
+struct BreakStmt : Stmt {
+    Token keyword;
+    BreakStmt(Token keyword) : keyword(keyword) {}
+};
+
+struct ContinueStmt : Stmt {
+    Token keyword;
+    ContinueStmt(Token keyword) : keyword(keyword) {}
+};
+
 struct ReturnStmt : Stmt {
     Token keyword;
     std::unique_ptr<Expr> value; // Can be null for 'return;'

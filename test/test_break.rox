@@ -1,0 +1,15 @@
+function main() -> none {
+    print(['T','e','s','t','i','n','g',' ','b','r','e','a','k','\n']);
+    list[num] lst;
+    repeat i in range(0, 5) {
+        if (i == 3) {
+            break;
+        }
+        lst.append(i);
+    }
+    if (not (lst.size() == 3)) {
+        print("Error: Expected size 3, got ", lst.size(), "\n");
+        return;
+    }
+    print("Done!");
+}

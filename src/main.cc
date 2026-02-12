@@ -98,14 +98,14 @@ void cmd_compile(const std::string& inputPath) {
 }
 
 void cmd_run(const std::string& inputPath) {
-    cmd_generate(inputPath);
-    // Logic to get binary path
+    cmd_compile(inputPath);
+
     std::string filename = inputPath;
-     size_t lastSlash = inputPath.find_last_of('/');
+    size_t lastSlash = inputPath.find_last_of('/');
     if (lastSlash != std::string::npos) {
         filename = inputPath.substr(lastSlash + 1);
     }
-     if (filename.size() > 4 && filename.substr(filename.size() - 4) == ".rox") {
+    if (filename.size() > 4 && filename.substr(filename.size() - 4) == ".rox") {
         filename = filename.substr(0, filename.size() - 4);
     }
 
@@ -113,34 +113,7 @@ void cmd_run(const std::string& inputPath) {
     std::string cmd = "./" + binaryPath;
     int ret = system(cmd.c_str());
     if (ret != 0) {
-         std::cout << "Program exited with " << WEXITSTATUS(ret) << std::endl;
-    }
-    // cmd_run implementation in previous view also had compilation step separately?
-    // Actually cmd_run called cmd_compile in previous code.
-    // I should call cmd_compile to ensure binary exists.
-    // My replacement for cmd_run above called cmd_generate but not compile logic fully.
-    // Let me fix this in the replacement content to match original logic properly.
-    // Wait, original cmd_run called cmd_compile.
-}
-
-void cmd_run_fixed(const std::string& inputPath) {
-    cmd_compile(inputPath);
-
-    std::string filename = inputPath;
-     size_t lastSlash = inputPath.find_last_of('/');
-    if (lastSlash != std::string::npos) {
-        filename = inputPath.substr(lastSlash + 1);
-    }
-     if (filename.size() > 4 && filename.substr(filename.size() - 4) == ".rox") {
-        filename = filename.substr(0, filename.size() - 4);
-    }
-
-    std::string binaryPath = "generated/" + filename;
-    std::string cmd = "./" + binaryPath;
-    int ret = system(cmd.c_str());
-     if (ret != 0) {
-         // Return exit code
-         // exit(WEXITSTATUS(ret)); // No need to exit main process, just return
+        // Just return, let system handle exit code propogation if we care
     }
 }
 
@@ -176,7 +149,7 @@ int main(int argc, char* argv[]) {
         cmd_compile(argv[2]);
     } else if (command == "run") {
         if (argc < 3) return 1;
-        cmd_run_fixed(argv[2]);
+        cmd_run(argv[2]);
     } else if (command == "format") {
         if (argc < 3) return 1;
         cmd_format(argv[2]);

@@ -264,9 +264,19 @@ void Codegen::genStmt(Stmt* stmt) {
     else if (auto* s = dynamic_cast<RepeatStmt*>(stmt)) genRepeat(s);
     else if (auto* s = dynamic_cast<FunctionStmt*>(stmt)) genFunction(s);
     else if (auto* s = dynamic_cast<ReturnStmt*>(stmt)) genReturn(s);
+    else if (auto* s = dynamic_cast<BreakStmt*>(stmt)) genBreak(s);
+    else if (auto* s = dynamic_cast<ContinueStmt*>(stmt)) genContinue(s);
     else if (auto* s = dynamic_cast<LetStmt*>(stmt)) genLet(s);
     else if (auto* s = dynamic_cast<ExprStmt*>(stmt)) genExprStmt(s);
     else emitLine("// Unknown statement");
+}
+
+void Codegen::genBreak(BreakStmt* stmt) {
+    emitLine("break;");
+}
+
+void Codegen::genContinue(ContinueStmt* stmt) {
+    emitLine("continue;");
 }
 
 void Codegen::genExpr(Expr* expr) {

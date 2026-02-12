@@ -35,6 +35,8 @@ private:
     void genRepeat(RepeatStmt* stmt);
     void genFunction(FunctionStmt* stmt);
     void genReturn(ReturnStmt* stmt);
+    void genBreak(BreakStmt* stmt);
+    void genContinue(ContinueStmt* stmt);
     void genLet(LetStmt* stmt);
     void genExprStmt(ExprStmt* stmt);
 

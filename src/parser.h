@@ -24,6 +24,8 @@ private:
     std::unique_ptr<Stmt> ifStatement();
     std::unique_ptr<Stmt> repeatStatement();
     std::unique_ptr<Stmt> returnStatement();
+    std::unique_ptr<Stmt> breakStatement();
+    std::unique_ptr<Stmt> continueStatement();
     std::vector<std::unique_ptr<Stmt>> block();
 
     std::unique_ptr<Expr> expression();
