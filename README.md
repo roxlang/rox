@@ -113,12 +113,15 @@ The language forces clarity — not ceremony.
 
 - `if` / `else`
 - `repeat i in range(start, end, step)`
+- `break`
+- `continue`
 
 ### Built-in Functions
 
 - `print(val) -> none` (supports string, num, float, bool, char, list)
 - `isOk(rox_result[T]) -> bool`
 - `getValue(rox_result[T]) -> T`
+- `getError(rox_result[T]) -> string`
 
 ### Math Library
 
@@ -166,6 +169,14 @@ if (not isOk(r)) {
     return [-1, -1];
 }
 num value = getValue(r);
+```
+
+To get the error message:
+
+```rox
+if (not isOk(r)) {
+    print("Error: ", getError(r), "\n");
+}
 ```
 
 Nothing throws. Nothing hides.

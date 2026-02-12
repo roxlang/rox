@@ -82,6 +82,8 @@ ROX is a statically typed language. All types must be explicit.
   rox_result[num] result = list.at(5);
   if (isOk(result)) {
       num val = getValue(result);
+  } else {
+      print("Error: ", getError(result), "\n");
   }
   ```
 
@@ -113,6 +115,13 @@ repeat i in range(0, 5) { ... }
 // Backwards
 repeat i in range(10, 0, -1) { ... }
 ```
+
+### Loop Control
+
+- `break`: Terminates the loop.
+- `continue`: Skips to next iteration.
+
+````
 
 ## Collections
 
@@ -155,6 +164,7 @@ Immutable sequence of bytes.
 
 - `isOk(rox_result[T]) -> bool`
 - `getValue(rox_result[T]) -> T`
+- `getError(rox_result[T]) -> string`
 
 ## Math Library
 
@@ -195,4 +205,4 @@ Single-line comments starting with `//`.
 ```rox
 // This is a comment
 num x = 10;
-```
+````

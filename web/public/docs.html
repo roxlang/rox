@@ -177,10 +177,12 @@
       <li><strong>Arithmetic</strong>: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>
       </li>
       <li><strong>Comparison</strong>: <code>==</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>,
-        <code>&gt;=</code></li>
+        <code>&gt;=</code>
+      </li>
       <li><strong>Logical</strong>: <code>and</code>, <code>or</code>, <code>not</code></li>
       <li><strong>Note</strong>: <code>!=</code> and <code>!</code> are <strong>not</strong> supported. Use
-        <code>not (a == b)</code> and <code>not a</code>.</li>
+        <code>not (a == b)</code> and <code>not a</code>.
+      </li>
     </ul>
 
     <h3>Types</h3>
@@ -200,6 +202,8 @@
       <li><code>if</code> / <code>else</code></li>
       <li><code>repeat i in range(start, end, step)</code></li>
       <li><code>repeat i in range(start, end)</code> (step defaults to 1)</li>
+      <li><code>break</code></li>
+      <li><code>continue</code></li>
     </ul>
 
     <h3>Built-in Functions</h3>
@@ -207,6 +211,7 @@
       <li><code>print(val) -> none</code> (supports string, num, num32, float, bool, char, list)</li>
       <li><code>isOk(rox_result[T]) -> bool</code></li>
       <li><code>getValue(rox_result[T]) -> T</code></li>
+      <li><code>getError(rox_result[T]) -> string</code></li>
     </ul>
 
     <h3>Comments</h3>
@@ -257,6 +262,7 @@ num x = 10; // This is also a comment</code></pre>
     <p>ROX does not use exceptions. Errors are explicit values:</p>
     <pre><code>rox_result[num] r = nums.at(i);
 if (not isOk(r)) {
+    print("Error: ", getError(r), "\n");
     return [-1, -1];
 }
 num value = getValue(r);</code></pre>
