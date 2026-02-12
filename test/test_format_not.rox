@@ -1,0 +1,4 @@
+function main() -> none {
+    print(not(true));
+    if(not(false)){print("yes");}
+}

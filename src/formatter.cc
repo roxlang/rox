@@ -61,7 +61,7 @@ std::string Formatter::format() {
                  Token next = tokens[i+1];
                  if (next.type == TokenType::SEMICOLON || next.type == TokenType::COMMA || next.type == TokenType::DOT || next.type == TokenType::RIGHT_PAREN || next.type == TokenType::LEFT_BRACKET || next.type == TokenType::RIGHT_BRACKET) {
                      spaceAfter = false;
-                 } else if (t.type == TokenType::LEFT_PAREN || t.type == TokenType::LEFT_BRACKET || t.type == TokenType::DOT || t.type == TokenType::NOT) {
+                 } else if (t.type == TokenType::LEFT_PAREN || t.type == TokenType::LEFT_BRACKET || t.type == TokenType::DOT) {
                      spaceAfter = false;
                  } else {
                      spaceAfter = true;
