@@ -119,6 +119,8 @@
     <pre><code>function add(num a, num b) -> num {
     return a + b;
 }</code></pre>
+    <p><strong>Note</strong>: Function names (except <code>main</code>) are automatically namespaced by the compiler.
+      User identifiers <strong>must not</strong> begin with <code>roxv26_</code>.</p>
 
     <h3>Parameters</h3>
     <p>Parameters must have explicit types.</p>
@@ -133,12 +135,16 @@
     <pre><code>function do_nothing() -> none {
     return;
 }</code></pre>
+    <p><strong>Rule</strong>: If a function has return type <code>none</code>, reaching the end of the function body
+      implicitly returns <code>none</code>.</p>
 
     <h2>Functions as Values</h2>
     <p>Since functions are first-class, you can use them just like any other value.</p>
 
     <h3>Type Syntax</h3>
     <p>Function types are written as <code>function(ParamType1, ParamType2, ...) -> ReturnType</code>.</p>
+    <p><strong>Type Matching</strong>: Function types must match exactly. No implicit conversions or variance are
+      allowed.</p>
 
     <h3>Assigning to Variables</h3>
     <p>You can assign a function to a variable with a matching function type.</p>
