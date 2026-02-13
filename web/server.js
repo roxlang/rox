@@ -18,6 +18,50 @@ const getFileHash = (req) => {
   return crypto.createHash("md5").update(ip).digest("hex");
 };
 
+// Cleanup stale files (safety net for crashed processes)
+const CLEANUP_AGE = 10 * 60 * 1000; // 10 minutes
+
+const cleanupStaleFiles = () => {
+  const tmpDir = os.tmpdir();
+  const generatedDir = path.join(tmpDir, "generated");
+  const now = Date.now();
+
+  // 1. Clean .rox files in tmpDir
+  fs.readdir(tmpDir, (err, files) => {
+    if (err) return; // Ignore errors (e.g. permission)
+
+    files.forEach((file) => {
+      if (file.startsWith("temp_") && file.endsWith(".rox")) {
+        const filePath = path.join(tmpDir, file);
+        fs.stat(filePath, (err, stats) => {
+          if (!err && now - stats.mtimeMs > CLEANUP_AGE) {
+            fs.unlink(filePath, () => {});
+          }
+        });
+      }
+    });
+  });
+
+  // 2. Clean artifacts in generatedDir
+  fs.readdir(generatedDir, (err, files) => {
+    if (err) return; // generated dir might not exist yet
+
+    files.forEach((file) => {
+      if (file.startsWith("temp_")) {
+        const filePath = path.join(generatedDir, file);
+        fs.stat(filePath, (err, stats) => {
+          if (!err && now - stats.mtimeMs > CLEANUP_AGE) {
+            fs.unlink(filePath, () => {});
+          }
+        });
+      }
+    });
+  });
+};
+
+// Run cleanup every 10 minutes
+setInterval(cleanupStaleFiles, CLEANUP_AGE);
+
 // Rate Limiting
 const limiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
