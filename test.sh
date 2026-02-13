@@ -50,6 +50,8 @@ run_test "test/test_continue.rox"
 run_test "test/test_result_error.rox"
 run_test "test/test_format_not.rox"
 run_test "test/test_cpp_keywords.rox"
+run_test "test/test_functions_as_values.rox"
+
 
 
 
