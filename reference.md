@@ -27,11 +27,15 @@ ROX automatically namespaces all user-defined identifiers to prevent collisions 
   - Math library functions (`num32_abs`, `pi`, etc.)
   - Standard library constants (`true`, `false`, `none`)
 
+**Rule**: User identifiers **must not** begin with `roxv26_`. This prefix is reserved for the compiler.
+
 ## Operators
 
 ### Arithmetic
 
-- `+`, `-`, `*`, `/`, `%`
+- `+`, `-`, `*`: Standard arithmetic.
+- `/`: Division. Returns `rox_result[T]`.
+- `%`: Modulo. Returns `rox_result[T]`.
 
 ### Comparison
 
@@ -128,6 +132,8 @@ repeat i in range(0, 5) { ... }
 repeat i in range(10, 0, -1) { ... }
 ```
 
+**Note**: `range(start, end, step)` is a special built-in iterable construct that can only be used with `repeat`. It does not return a list.
+
 ### Loop Control
 
 - `break`: Terminates the loop.
@@ -192,6 +198,7 @@ function name(type name, ...) -> return_type {
 - **Parameters**: Must have explicit types.
 - **Return Type**: Must be explicit. Use `none` if no value is returned.
 - **Recursion**: Supported.
+- **Type Matching**: Function types must match exactly. No implicit conversions or variance are allowed.
 
 ### Return Values
 
@@ -203,6 +210,8 @@ function log(string msg) -> none {
     // Implicit return none
 }
 ```
+
+**Rule**: If a function has return type `none`, reaching the end of the function body implicitly returns `none`.
 
 ### Functions as Values
 
@@ -238,7 +247,7 @@ logger("Log this message\n");
 
 ## Built-in Functions
 
-- `print(val) -> none`: Supports `string`, `num`, `num32`, `float`, `bool`, `char`, `list`.
+- `print(val...) -> none`: Variadic. Accepts one or more arguments.
 
 - `isOk(rox_result[T]) -> bool`
 - `getValue(rox_result[T]) -> T`

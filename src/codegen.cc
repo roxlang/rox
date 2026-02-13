@@ -410,6 +410,13 @@ void Codegen::genFunction(FunctionStmt* stmt) {
         genStmt(s.get());
     }
 
+    // Implicit return for None types
+    if (auto* t = dynamic_cast<PrimitiveType*>(stmt->returnType.get())) {
+        if (t->token.lexeme == "none") {
+            emitLine("return none;");
+        }
+    }
+
     indentLevel--;
     emitLine("}");
     currentFunctionName = oldFunctionName;

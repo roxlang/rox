@@ -193,7 +193,8 @@
     <h2>Language Features (v0)</h2>
     <h3>Operators</h3>
     <ul>
-      <li><strong>Arithmetic</strong>: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>
+      <li><strong>Arithmetic</strong>: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code> (returns
+        <code>rox_result[T]</code>), <code>%</code> (returns <code>rox_result[T]</code>)
       </li>
       <li><strong>Comparison</strong>: <code>==</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>,
         <code>&gt;=</code>
@@ -227,7 +228,7 @@
 
     <h3>Built-in Functions</h3>
     <ul>
-      <li><code>print(val) -> none</code> (supports string, num, num32, float, bool, char, list)</li>
+      <li><code>print(val...) -> none</code> (Variadic: accepts one or more arguments)</li>
       <li><code>isOk(rox_result[T]) -> bool</code></li>
       <li><code>getValue(rox_result[T]) -> T</code></li>
       <li><code>getError(rox_result[T]) -> string</code></li>
