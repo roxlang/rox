@@ -93,7 +93,7 @@ function two_sum(list[num] nums, num target) -> list[num] {
 - `range` is the only loop construct
 - Lists are accessed only via `.at()`
 
-The language forces clarity — not ceremony.
+ROX prioritizes clarity over convenience. Explicitness may cost more keystrokes, but it eliminates hidden behavior.
 
 ## Language Features (v0)
 
