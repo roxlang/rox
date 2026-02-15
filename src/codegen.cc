@@ -92,8 +92,7 @@ void Codegen::emitPreamble() {
     out << "#include <functional>\n"; // For std::function literals
 
     out << "\n// ROX Runtime\n";
-    out << "using num = int64_t;\n";
-    out << "using rox_float = double;\n";
+    // out << "using num = int64_t;\n"; // Removed usage of num
 
     out << "using rox_char = char;\n";
     out << "using rox_bool = bool;\n";
@@ -109,7 +108,7 @@ void Codegen::emitPreamble() {
     out << "    RoxString(std::string s) : val(std::move(s)) {}\n";
     out << "    RoxString() = default;\n";
     out << "\n";
-    out << "    num size() const { return (num)val.size(); }\n";
+    out << "    int64_t size() const { return (int64_t)val.size(); }\n";
     out << "    bool operator==(const RoxString& other) const { return val == other.val; }\n";
     out << "    bool operator!=(const RoxString& other) const { return val != other.val; }\n";
     out << "};\n";
@@ -180,15 +179,15 @@ void Codegen::emitPreamble() {
     out << "\n";
     out << "// List access\n";
     out << "template<typename T>\n";
-    out << "rox_result<T> rox_at(const std::vector<T>& xs, num i) {\n";
-    out << "    if (i < 0 || i >= (num)xs.size()) return error<T>(\"Index out of bounds\");\n";
+    out << "rox_result<T> rox_at(const std::vector<T>& xs, int64_t i) {\n";
+    out << "    if (i < 0 || i >= (int64_t)xs.size()) return error<T>(\"Index out of bounds\");\n";
     out << "    return ok(xs[i]);\n";
     out << "}\n";
     out << "\n";
     out << "// List Set\n";
     out << "template<typename T>\n";
-    out << "void rox_set(std::vector<T>& xs, num i, T val) {\n";
-    out << "    if (i < 0 || i >= (num)xs.size()) {\n";
+    out << "void rox_set(std::vector<T>& xs, int64_t i, T val) {\n";
+    out << "    if (i < 0 || i >= (int64_t)xs.size()) {\n";
     out << "        std::cerr << \"Error: Index out of bounds in list.set\" << std::endl;\n";
     out << "        exit(1);\n";
     out << "    }\n";
@@ -196,7 +195,7 @@ void Codegen::emitPreamble() {
     out << "}\n";
     out << "\n";
     out << "// String access\n";
-    out << "rox_result<char> rox_at(const RoxString& s, num i) {\n";
+    out << "rox_result<char> rox_at(const RoxString& s, int64_t i) {\n";
     out << "    if (i < 0 || i >= s.size()) return error<char>(\"Index out of bounds\");\n";
     out << "    return ok(s.val[i]);\n";
     out << "}\n";
@@ -264,12 +263,12 @@ void Codegen::emitPreamble() {
     out << "}\n";
     out << "\n";
 
-    out << "int64_t int64_abs(num x) { return std::abs(x); }\n";
-    out << "int64_t int64_min(num x, num y) { return std::min(x, y); }\n";
-    out << "int64_t int64_max(num x, num y) { return std::max(x, y); }\n";
-    out << "rox_result<num> int64_pow(num base, num exp) {\n";
-    out << "    if (exp < 0) return error<num>(\"Negative exponent\");\n";
-    out << "    num res = 1;\n";
+    out << "int64_t int64_abs(int64_t x) { return std::abs(x); }\n";
+    out << "int64_t int64_min(int64_t x, int64_t y) { return std::min(x, y); }\n";
+    out << "int64_t int64_max(int64_t x, int64_t y) { return std::max(x, y); }\n";
+    out << "rox_result<int64_t> int64_pow(int64_t base, int64_t exp) {\n";
+    out << "    if (exp < 0) return error<int64_t>(\"Negative exponent\");\n";
+    out << "    int64_t res = 1;\n";
     out << "    for (int i = 0; i < exp; ++i) res *= base;\n";
     out << "    return ok(res);\n";
     out << "}\n";
@@ -340,7 +339,7 @@ void Codegen::genType(Type* type) {
     if (auto* t = dynamic_cast<PrimitiveType*>(type)) {
         std::string s = t->token.lexeme;
         if (t->token.type == TokenType::TYPE_INT64) {
-            out << "num";
+            out << "int64_t";
         }
         else if (t->token.type == TokenType::TYPE_FLOAT64) out << "double";
         else if (s == "bool") out << "bool";
@@ -613,7 +612,7 @@ void Codegen::genLiteral(LiteralExpr* expr) {
         // No suffix -> num64
         // Cast to (num) to ensure std::vector deduction picks up vector<num>
         // instead of vector<long long> (which might differ from num=int64_t=long on Mac)
-        out << "((num)" << s << ")";
+        out << "((int64_t)" << s << ")";
     } else {
         out << expr->value.lexeme;
     }
@@ -720,7 +719,7 @@ void Codegen::genMethodCall(MethodCallExpr* expr) {
         out << ")";
     } else if (method == "size") {
         // cast to num for strict typing
-        out << "((num)";
+        out << "((int64_t)";
         genExpr(expr->object.get());
         out << ".size())";
     } else if (method == "getKeys") {
