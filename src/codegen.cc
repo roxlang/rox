@@ -92,7 +92,6 @@ void Codegen::emitPreamble() {
     out << "#include <functional>\n"; // For std::function literals
 
     out << "\n// ROX Runtime\n";
-    out << "using num32 = int32_t;\n";
     out << "using num = int64_t;\n";
     out << "using rox_float = double;\n";
 
@@ -150,7 +149,7 @@ void Codegen::emitPreamble() {
     out << "    return r.err;\n";
     out << "}\n";
 
-    out << "void print_loop(num32 n) {\n";
+    out << "void print_loop(int64_t n) {\n";
     out << "    for (int i = 0; i < n; ++i) {\n";
     out << "        std::cout << \"Hello, World!\" << std::endl;\n";
     out << "    }\n";
@@ -265,44 +264,34 @@ void Codegen::emitPreamble() {
     out << "}\n";
     out << "\n";
 
-    out << "num32 num32_abs(num32 x) { return std::abs(x); }\n";
-    out << "num32 num32_min(num32 x, num32 y) { return std::min(x, y); }\n";
-    out << "num32 num32_max(num32 x, num32 y) { return std::max(x, y); }\n";
-    out << "rox_result<num32> num32_pow(num32 base, num32 exp) {\n";
-    out << "    if (exp < 0) return error<num32>(\"Negative exponent\");\n";
-    out << "    num32 res = 1;\n";
-    out << "    for (int i = 0; i < exp; ++i) res *= base;\n";
-    out << "    return ok(res);\n";
-    out << "}\n";
-    out << "\n";
-    out << "num num_abs(num x) { return std::abs(x); }\n";
-    out << "num num_min(num x, num y) { return std::min(x, y); }\n";
-    out << "num num_max(num x, num y) { return std::max(x, y); }\n";
-    out << "rox_result<num> num_pow(num base, num exp) {\n";
+    out << "int64_t int64_abs(num x) { return std::abs(x); }\n";
+    out << "int64_t int64_min(num x, num y) { return std::min(x, y); }\n";
+    out << "int64_t int64_max(num x, num y) { return std::max(x, y); }\n";
+    out << "rox_result<num> int64_pow(num base, num exp) {\n";
     out << "    if (exp < 0) return error<num>(\"Negative exponent\");\n";
     out << "    num res = 1;\n";
     out << "    for (int i = 0; i < exp; ++i) res *= base;\n";
     out << "    return ok(res);\n";
     out << "}\n";
     out << "\n";
-    out << "double float_abs(double x) { return std::abs(x); }\n";
-    out << "double float_min(double x, double y) { return std::min(x, y); }\n";
-    out << "double float_max(double x, double y) { return std::max(x, y); }\n";
-    out << "double float_pow(double x, double y) { return std::pow(x, y); }\n";
-    out << "rox_result<double> float_sqrt(double x) {\n";
+    out << "double float64_abs(double x) { return std::abs(x); }\n";
+    out << "double float64_min(double x, double y) { return std::min(x, y); }\n";
+    out << "double float64_max(double x, double y) { return std::max(x, y); }\n";
+    out << "double float64_pow(double x, double y) { return std::pow(x, y); }\n";
+    out << "rox_result<double> float64_sqrt(double x) {\n";
     out << "    if (x < 0) return error<double>(\"Negative input for sqrt\");\n";
     out << "    return ok(std::sqrt(x));\n";
     out << "}\n";
-    out << "double float_sin(double x) { return std::sin(x); }\n";
-    out << "double float_cos(double x) { return std::cos(x); }\n";
-    out << "double float_tan(double x) { return std::tan(x); }\n";
-    out << "rox_result<double> float_log(double x) {\n";
+    out << "double float64_sin(double x) { return std::sin(x); }\n";
+    out << "double float64_cos(double x) { return std::cos(x); }\n";
+    out << "double float64_tan(double x) { return std::tan(x); }\n";
+    out << "rox_result<double> float64_log(double x) {\n";
     out << "    if (x <= 0) return error<double>(\"Non-positive input for log\");\n";
     out << "    return ok(std::log(x));\n";
     out << "}\n";
-    out << "double float_exp(double x) { return std::exp(x); }\n";
-    out << "double float_floor(double x) { return std::floor(x); }\n";
-    out << "double float_ceil(double x) { return std::ceil(x); }\n";
+    out << "double float64_exp(double x) { return std::exp(x); }\n";
+    out << "double float64_floor(double x) { return std::floor(x); }\n";
+    out << "double float64_ceil(double x) { return std::ceil(x); }\n";
     out << "\n";
     out << "\n";
     out << "\n";
@@ -350,11 +339,10 @@ void Codegen::genExpr(Expr* expr) {
 void Codegen::genType(Type* type) {
     if (auto* t = dynamic_cast<PrimitiveType*>(type)) {
         std::string s = t->token.lexeme;
-        if (s == "num32") out << "num32";
-        else if (t->token.type == TokenType::TYPE_NUM) { // Corrected from `kind == TokenType::TYPE_NUM`
+        if (t->token.type == TokenType::TYPE_INT64) {
             out << "num";
         }
-        else if (s == "float") out << "double";
+        else if (t->token.type == TokenType::TYPE_FLOAT64) out << "double";
         else if (s == "bool") out << "bool";
         else if (s == "char") out << "char";
         else if (s == "string") out << "RoxString";
@@ -622,17 +610,10 @@ void Codegen::genLiteral(LiteralExpr* expr) {
         out << "rox_str(" << expr->value.lexeme << ")";
     } else if (expr->value.type == TokenType::NUMBER_INT) {
         std::string s = expr->value.lexeme;
-        size_t npos = s.find('n');
-        if (npos != std::string::npos) {
-            // has 'n' -> likely n32 (since we removed n64 parser support)
-            // Just output the number part
-            out << s.substr(0, npos);
-        } else {
-            // No suffix -> num64
-            // Cast to (num) to ensure std::vector deduction picks up vector<num>
-            // instead of vector<long long> (which might differ from num=int64_t=long on Mac)
-            out << "((num)" << s << ")";
-        }
+        // No suffix -> num64
+        // Cast to (num) to ensure std::vector deduction picks up vector<num>
+        // instead of vector<long long> (which might differ from num=int64_t=long on Mac)
+        out << "((num)" << s << ")";
     } else {
         out << expr->value.lexeme;
     }
