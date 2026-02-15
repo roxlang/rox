@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include "ast.h"
+#include <unordered_map>
 
 namespace rox {
 
