@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Parse arguments for --clean flag
+for arg in "$@"
+do
+    if [ "$arg" == "--clean" ]; then
+        echo "Cleaning build..."
+        make clean
+    fi
+done
+
 # Build the compiler first
 make
 
@@ -12,6 +21,9 @@ echo "Running ROX Tests..."
 echo "--------------------------------"
 
 fail_count=0
+
+
+
 
 run_test() {
     file=$1

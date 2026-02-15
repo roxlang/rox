@@ -10,6 +10,11 @@ COPY src ./src
 # Build the compiler (produces /build/rox)
 RUN make
 
+# Run tests in the builder environment (which has make/clang/g++)
+COPY test.sh .
+COPY test ./test
+RUN chmod +x test.sh && ./test.sh
+
 # Stage 2: Runtime environment
 FROM node:20-slim
 
