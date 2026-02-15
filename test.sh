@@ -70,7 +70,8 @@ run_test "test/valid_parentheses.rox"
 # run tests that should fail
 test_fail "test/test_roxv26_prefix.rox"
 test_fail "test/test_string_fail.rox"
-
+test_fail "test/test_flow_invalid_1.rox"
+test_fail "test/test_flow_invalid_2.rox"
 
 
 echo "--------------------------------"
