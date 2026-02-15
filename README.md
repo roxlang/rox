@@ -100,8 +100,8 @@ The language forces clarity — not ceremony.
 ### Types
 
 - `num` (64 bit signed integer)
-- `num32` (32 bit signed integer)
 - `bool`
+- `float`
 - `char`
 - `string`
 - `none`
