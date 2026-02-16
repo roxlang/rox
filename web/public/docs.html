@@ -119,18 +119,15 @@
     <p>ROX removes implicit behavior, hidden conversions, and syntactic tricks so that expressing logic feels direct and
       mechanical rather than negotiated.</p>
 
-    <h2>Why ROX Exists</h2>
-    <p>In many languages, expressing simple logic often requires navigating implicit type coercions, silent conversions,
-      operator overloading, hidden control flow, and exception systems.</p>
-    <p>ROX intentionally removes these. The goal is <strong>clarity of expression</strong>.</p>
+    <h2>First Principles</h2>
     <ul>
-      <li>Every type is explicit.</li>
-      <li>Every error is a value.</li>
-      <li>Every access is deliberate.</li>
-      <li>Nothing implicit happens behind your back.</li>
+      <li>We no longer write code that needs to fit on a punch card — readability wins over brevity.</li>
+      <li>For every write, a line of code is read 10 times. Optimize for the reader, not the writer.</li>
+      <li>Code is written in calm; it is read in crisis.</li>
+      <li>More often than not: cleverness is the enemy of clarity.</li>
     </ul>
 
-    <h2>Core Principles (v0)</h2>
+    <h2>Language Guarantees (v0)</h2>
     <ul>
       <li>No implicit type conversions</li>
       <li>No bracket indexing (<code>[]</code> only for list literals)</li>
@@ -228,6 +225,9 @@
       <li><code>break</code></li>
       <li><code>continue</code></li>
     </ul>
+    <p><strong>Note:</strong> ROX intentionally has no <code>while</code> loop. Every loop must have an explicit upper
+      bound — either via <code>range(start, upperBound, step)</code> or by iterating a finite collection. This
+      guarantees all loops terminate.</p>
 
     <h3>Built-in Functions</h3>
     <ul>

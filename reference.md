@@ -6,7 +6,14 @@ ROX is a minimal, clarity-first programming language built on a simple belief:
 
 ROX removes implicit behavior, hidden conversions, and syntactic tricks so that expressing logic feels direct and mechanical rather than negotiated.
 
-## Core Principles (v0)
+## First Principles
+
+- We no longer write code that must fit on a punch card. We can afford clarity.
+- Code is written once and read many times. Optimize for the reader, not the writer.
+- Code is written in calm and read in crisis.
+- Cleverness is often the enemy of clarity.
+
+## Language Guarantees (v0)
 
 - No implicit type conversions
 - No bracket indexing (`[]` only for list literals)
@@ -193,7 +200,10 @@ for i in range(0, 5, 1) { ... }
 for i in range(10, 0, -1) { ... }
 ```
 
-**Note**: `range(start, end, step)` is a standard built-in function. End is exclusive. Step must not be 0 (compile-time error if literal, runtime error otherwise). Negative steps are supported.
+**Notes:**
+
+- `range(start, end, step)` is a standard built-in function. End is exclusive. Step must not be 0 (compile-time error if literal, runtime error otherwise). Negative steps are supported.
+- ROX intentionally has no while loop. Every loop must have an explicit upper bound - either via `range(start, upperBound, step)` + `break` or by iterating a finite collection. This guarantees all loops terminate.
 
 ### Iterating Collections
 

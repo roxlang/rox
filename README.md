@@ -12,38 +12,14 @@ This repository contains the ROX compiler implementation written in C++20.
 
 ---
 
-## Why ROX Exists
+## First Principles
 
-In many languages, expressing simple logic often requires navigating:
+- We no longer write code that must fit on a punch card. We can afford clarity.
+- Code is written once and read many times. Optimize for the reader, not the writer.
+- Code is written in calm and read in crisis.
+- Cleverness is often the enemy of clarity.
 
-- Implicit type coercions
-- Silent conversions
-- Operator overloading
-- Hidden control flow
-- Exception systems
-- Special cases
-
-ROX intentionally removes these.
-
-The goal is not convenience.
-The goal is **clarity of expression**.
-
-In ROX:
-
-- Every type is explicit.
-- Every error is a value.
-- Every access is deliberate.
-- Every control structure is visible.
-- Nothing implicit happens behind your back.
-
-You write the logic.
-The language stays out of the way.
-
----
-
-## Core Principles
-
-ROX v0 enforces:
+## Language Guarantees (v0)
 
 - No implicit type conversions
 - No bracket indexing (`[]` only for list literals)
@@ -72,7 +48,7 @@ function two_sum(list[int64] int64s, int64 target) -> list[int64] {
                 int64 v1 = getValue(r1);
 
                 rox_result[int64] r2 = int64s.at(j);
-                if (isOk(r2)) {
+                if (isOk(r2)) {g
                     int64 v2 = getValue(r2);
 
                     if (v1 + v2 == target) {
