@@ -690,6 +690,19 @@ void Codegen::genMethodCall(MethodCallExpr* expr) {
         if (!expr->arguments.empty()) genExpr(expr->arguments[0].get());
         out << ")";
     } else if (method == "append") {
+        auto objType = inferType(expr->object.get());
+        if (auto* listType = dynamic_cast<ListType*>(objType.get())) {
+             if (expr->arguments.empty()) {
+                 std::cerr << "Error: list.append expects 1 argument." << std::endl;
+                 exit(1);
+             }
+             auto argType = inferType(expr->arguments[0].get());
+             if (argType && argType->toString() != listType->elementType->toString()) {
+                  std::cerr << "Type Error: List append type mismatch. Expected " << listType->elementType->toString()
+                            << " but got " << argType->toString() << "." << std::endl;
+                  exit(1);
+             }
+        }
         genExpr(expr->object.get());
         out << ".push_back(";
         if (!expr->arguments.empty()) genExpr(expr->arguments[0].get());
