@@ -72,10 +72,11 @@ std::string Formatter::format() {
                  if (t.type == TokenType::IDENTIFIER && next.type == TokenType::LEFT_PAREN) spaceAfter = false;
                  // print(...) no space
                  if (t.type == TokenType::PRINT && next.type == TokenType::LEFT_PAREN) spaceAfter = false;
-                 // range(...) no space
-                 if (t.type == TokenType::RANGE && next.type == TokenType::LEFT_PAREN) spaceAfter = false;
                  // -> no space
                  if (t.type == TokenType::MINUS && next.type == TokenType::GREATER) spaceAfter = false;
+
+                 // = [ should have space (list literal assignment)
+                 if (t.type == TokenType::EQUAL && next.type == TokenType::LEFT_BRACKET) spaceAfter = true;
 
                  // if ( space
                  if ((t.type == TokenType::IF || t.type == TokenType::FOR) && next.type == TokenType::LEFT_PAREN) spaceAfter = true;
