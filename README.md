@@ -14,8 +14,8 @@ This repository contains the ROX compiler implementation written in C++20.
 
 ## First Principles
 
-- We no longer write code that must fit on a punch card. We can afford clarity.
-- Code is written once and read many times. Optimize for the reader, not the writer.
+- We no longer write code that must fit on a punch card — readability wins over brevity.
+- Code is read far more than it is written. Optimize for the reader, not the writer.
 - Code is written in calm and read in crisis.
 - Cleverness is often the enemy of clarity.
 
