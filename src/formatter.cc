@@ -75,6 +75,9 @@ std::string Formatter::format() {
                  // -> no space
                  if (t.type == TokenType::MINUS && next.type == TokenType::GREATER) spaceAfter = false;
 
+                 // = [ should have space (list literal assignment)
+                 if (t.type == TokenType::EQUAL && next.type == TokenType::LEFT_BRACKET) spaceAfter = true;
+
                  // if ( space
                  if ((t.type == TokenType::IF || t.type == TokenType::FOR) && next.type == TokenType::LEFT_PAREN) spaceAfter = true;
              }
