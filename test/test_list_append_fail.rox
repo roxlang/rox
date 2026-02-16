@@ -1,0 +1,5 @@
+function main() -> none {
+    list[int64] l;
+    float64 x = 2.2;
+    l.append(x); // Should error: x is float64, list expects int64
+}

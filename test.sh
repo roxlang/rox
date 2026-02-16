@@ -98,6 +98,7 @@ test_fail "test/test_string_fail.rox"
 test_fail "test/test_flow_invalid_1.rox" "getValue(res) is unsafe"
 test_fail "test/test_flow_invalid_2.rox" "getValue(res) is unsafe"
 test_fail "test/test_dict_fail.rox" "Type Error: Dictionary value type mismatch"
+test_fail "test/test_list_append_fail.rox" "Type Error: List append type mismatch"
 
 
 echo "--------------------------------"
