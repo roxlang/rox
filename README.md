@@ -48,7 +48,7 @@ ROX v0 enforces:
 - No implicit type conversions
 - No bracket indexing (`[]` only for list literals)
 - No exceptions — errors are explicit values (`rox_result[T]`)
-- A single loop construct (`repeat`)
+- A single loop construct (`for`)
 - Explicit control flow only
 - Strict compile-time type checking
 
@@ -64,8 +64,8 @@ Two Sum implemented in ROX:
 function two_sum(list[int64] int64s, int64 target) -> list[int64] {
     int64 n = int64s.size();
 
-    repeat i in range(0, n, 1) {
-        repeat j in range(i + 1, n, 1) {
+    for i in range(0, n, 1) {
+        for j in range(i + 1, n, 1) {
 
             rox_result[int64] r1 = int64s.at(i);
             if (isOk(r1)) {
@@ -114,7 +114,7 @@ ROX prioritizes clarity over convenience. Explicitness may cost more keystrokes,
 ### Control Flow
 
 - `if` / `else`
-- `repeat i in range(start, end, step)`
+- `for i in range(start, end, step)`
 - `break`
 - `continue`
 

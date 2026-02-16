@@ -135,7 +135,7 @@
       <li>No implicit type conversions</li>
       <li>No bracket indexing (<code>[]</code> only for list literals)</li>
       <li>No exceptions — errors are explicit values (<code>rox_result[T]</code>)</li>
-      <li>A single loop construct (<code>repeat</code>)</li>
+      <li>A single loop construct (<code>for</code>)</li>
       <li>Explicit control flow only</li>
       <li>Strict compile-time type checking</li>
       <li>Automatic namespacing (reserved <code>roxv26_</code> prefix)</li>
@@ -161,8 +161,8 @@
     <pre><code>function two_sum(list[int64] int64s, int64 target) -> list[int64] {
     int64 n = int64s.size();
 
-    repeat i in range(0, n, 1) {
-        repeat j in range(i + 1, n, 1) {
+    for i in range(0, n, 1) {
+        for j in range(i + 1, n, 1) {
 
             rox_result[int64] r1 = int64s.at(i);
             if (isOk(r1)) {
@@ -222,8 +222,8 @@
     <h3>Control Flow</h3>
     <ul>
       <li><code>if</code> / <code>else</code></li>
-      <li><code>repeat i in range(start, end, step)</code></li>
-      <li><code>repeat i in range(start, end)</code> (step defaults to 1)</li>
+      <li><code>for i in range(start, end, step)</code></li>
+      <li><code>for i in range(start, end)</code> (step defaults to 1)</li>
       <li><code>break</code></li>
       <li><code>continue</code></li>
     </ul>

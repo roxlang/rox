@@ -50,7 +50,7 @@ private:
     // Helpers for dispatch
     void genBlock(BlockStmt* stmt);
     void genIf(IfStmt* stmt);
-    void genRepeat(RepeatStmt* stmt);
+    void genFor(ForStmt* stmt);
     void genFunction(FunctionStmt* stmt);
     void genReturn(ReturnStmt* stmt);
     void genBreak(BreakStmt* stmt);

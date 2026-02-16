@@ -6,7 +6,7 @@ function is_valid(list[char] s) -> bool {
 
     int64 n = s.size();
 
-    repeat i in range(0, n, 1) {
+    for i in range(0, n, 1) {
         rox_result[char] r = s.at(i);
         // If error, return false (invalid state)
         if (isOk(r)) {

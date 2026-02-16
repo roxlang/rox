@@ -304,7 +304,7 @@ void Codegen::genStmt(Stmt* stmt) {
     }
     if (auto* s = dynamic_cast<BlockStmt*>(stmt)) genBlock(s);
     else if (auto* s = dynamic_cast<IfStmt*>(stmt)) genIf(s);
-    else if (auto* s = dynamic_cast<RepeatStmt*>(stmt)) genRepeat(s);
+    else if (auto* s = dynamic_cast<ForStmt*>(stmt)) genFor(s);
     else if (auto* s = dynamic_cast<FunctionStmt*>(stmt)) genFunction(s);
     else if (auto* s = dynamic_cast<ReturnStmt*>(stmt)) genReturn(s);
     else if (auto* s = dynamic_cast<BreakStmt*>(stmt)) genBreak(s);
@@ -422,7 +422,7 @@ void Codegen::genIf(IfStmt* stmt) {
     }
 }
 
-void Codegen::genRepeat(RepeatStmt* stmt) {
+void Codegen::genFor(ForStmt* stmt) {
     emitIndent();
     out << "for (auto " << sanitize(stmt->iterator.lexeme) << " = ";
     genExpr(stmt->start.get());

@@ -8,7 +8,7 @@ function main() -> none {
 
     // Test range
     print("Counting: ");
-    repeat i in range(0, 5, 1) {
+    for i in range(0, 5, 1) {
        // We need integer to string conversion?
        // ROX v0 doesn't have `to_string`.
        // We can only print strings? "print(text <list[char]>)".
