@@ -78,7 +78,7 @@ std::string Formatter::format() {
                  if (t.type == TokenType::MINUS && next.type == TokenType::GREATER) spaceAfter = false;
 
                  // if ( space
-                 if ((t.type == TokenType::IF || t.type == TokenType::REPEAT) && next.type == TokenType::LEFT_PAREN) spaceAfter = true;
+                 if ((t.type == TokenType::IF || t.type == TokenType::FOR) && next.type == TokenType::LEFT_PAREN) spaceAfter = true;
              }
         }
 

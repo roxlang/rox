@@ -24,7 +24,7 @@ enum class TokenType {
 
     // Keywords.
     AND, ELSE, FALSE, FUNCTION, IF, CONST, NONE, OR,
-    PRINT, RETURN, TRUE, REPEAT, RANGE, NOT, READ_LINE,
+    PRINT, RETURN, TRUE, FOR, RANGE, NOT, READ_LINE,
     BREAK, CONTINUE,
 
     // Types

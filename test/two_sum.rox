@@ -5,8 +5,8 @@ function two_sum(list[int64] int64s, int64 target) -> list[int64] {
     int64 n = int64s.size();
 
     // i, j are int64 from range
-    repeat i in range(0, n, 1) {
-        repeat j in range(i + 1, n, 1) {
+    for i in range(0, n, 1) {
+        for j in range(i + 1, n, 1) {
 
             // Handle result explicitly
             rox_result[int64] r1 = int64s.at(i);

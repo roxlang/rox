@@ -11,7 +11,7 @@ ROX removes implicit behavior, hidden conversions, and syntactic tricks so that 
 - No implicit type conversions
 - No bracket indexing (`[]` only for list literals)
 - No exceptions — errors are explicit values (`rox_result[T]`)
-- A single loop construct (`repeat`)
+- A single loop construct (`for`)
 - Explicit control flow only
 - Strict compile-time type checking
 - **Reserved Prefix**: `roxv26_` is reserved for internal namespacing. User variables must not start with this prefix.
@@ -120,20 +120,20 @@ if (x > 10) {
 
 ### Loops
 
-ROX has a single loop construct: `repeat`.
+ROX has a single loop construct: `for`.
 
 ```rox
 // Range(start, end, step)
-repeat i in range(0, 5, 1) { ... }
+for i in range(0, 5, 1) { ... }
 
 // Range(start, end) - step defaults to 1
-repeat i in range(0, 5) { ... }
+for i in range(0, 5) { ... }
 
 // Backwards
-repeat i in range(10, 0, -1) { ... }
+for i in range(10, 0, -1) { ... }
 ```
 
-**Note**: `range(start, end, step)` is a special built-in iterable construct that can only be used with `repeat`. It does not return a list.
+**Note**: `range(start, end, step)` is a special built-in iterable construct that can only be used with `for`. It does not return a list.
 
 ### Loop Control
 

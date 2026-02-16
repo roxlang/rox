@@ -18,7 +18,7 @@ const std::unordered_map<std::string, TokenType>& Lexer::getKeywords() {
         {"read_line", TokenType::READ_LINE},
         {"return", TokenType::RETURN},
         {"true", TokenType::TRUE},
-        {"repeat", TokenType::REPEAT},
+        {"for", TokenType::FOR},
         {"range", TokenType::RANGE},
         {"not", TokenType::NOT},
         {"break", TokenType::BREAK},

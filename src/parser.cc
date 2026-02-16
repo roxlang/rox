@@ -93,7 +93,7 @@ std::unique_ptr<Stmt> Parser::varDeclaration() {
 
 std::unique_ptr<Stmt> Parser::statement() {
     if (match({TokenType::IF})) return ifStatement();
-    if (match({TokenType::REPEAT})) return repeatStatement();
+    if (match({TokenType::FOR})) return forStatement();
     if (match({TokenType::BREAK})) return breakStatement();
     if (match({TokenType::CONTINUE})) return continueStatement();
     if (match({TokenType::RETURN})) return returnStatement();
@@ -131,8 +131,8 @@ std::unique_ptr<Stmt> Parser::ifStatement() {
     return std::make_unique<IfStmt>(std::move(condition), std::move(thenBranch), std::move(elseBranch));
 }
 
-std::unique_ptr<Stmt> Parser::repeatStatement() {
-    Token iterator = consume(TokenType::IDENTIFIER, "Expect iterator name after 'repeat'.");
+std::unique_ptr<Stmt> Parser::forStatement() {
+    Token iterator = consume(TokenType::IDENTIFIER, "Expect iterator name after 'for'.");
 
     // Check for 'in' keyword which might be lexed as IDENTIFIER "in"
     if (check(TokenType::IDENTIFIER) && peek().lexeme == "in") {
@@ -165,7 +165,7 @@ std::unique_ptr<Stmt> Parser::repeatStatement() {
 
     std::unique_ptr<Stmt> body = statement();
 
-    return std::make_unique<RepeatStmt>(iterator, std::move(start), std::move(end), std::move(step), std::move(body));
+    return std::make_unique<ForStmt>(iterator, std::move(start), std::move(end), std::move(step), std::move(body));
 }
 
 std::unique_ptr<Stmt> Parser::returnStatement() {
@@ -465,7 +465,7 @@ void Parser::synchronize() {
         switch (peek().type) {
             case TokenType::FUNCTION:
             case TokenType::CONST:
-            case TokenType::REPEAT:
+            case TokenType::FOR:
             case TokenType::IF:
             case TokenType::PRINT:
             case TokenType::RETURN:

@@ -13,7 +13,7 @@ function main() -> none {
 
     // 2. Loops & Math
     print("Counting:\n");
-    repeat i in range(1, 4, 1) {
+    for i in range(1, 4, 1) {
         print(i, " squared is ", i * i, "\n");
     }
 }
