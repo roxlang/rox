@@ -427,16 +427,59 @@ void Codegen::genBlock(BlockStmt* stmt) {
     emitLine("}");
 }
 
+// Helper to determine if a statement guarantees control flow exit (return, break, continue)
+// This is used for flow-sensitive analysis (e.g. if (not isOk(x)) return;)
+static bool isTerminal(Stmt* stmt) {
+    if (!stmt) return false;
+    if (dynamic_cast<ReturnStmt*>(stmt)) return true;
+    if (dynamic_cast<BreakStmt*>(stmt)) return true;
+    if (dynamic_cast<ContinueStmt*>(stmt)) return true;
+
+    if (auto* block = dynamic_cast<BlockStmt*>(stmt)) {
+        for (const auto& s : block->statements) {
+            if (isTerminal(s.get())) return true;
+        }
+        return false;
+    }
+
+    if (auto* ifStmt = dynamic_cast<IfStmt*>(stmt)) {
+        // If both branches are terminal, the if is terminal
+        if (ifStmt->elseBranch && isTerminal(ifStmt->thenBranch.get()) && isTerminal(ifStmt->elseBranch.get())) {
+            return true;
+        }
+        return false;
+    }
+
+    return false;
+}
+
 void Codegen::genIf(IfStmt* stmt) {
-    // Check if condition is 'isOk(var)'
-    // If so, refine var in then branch
-    std::string refinedVarName = "";
+    // Check if condition is 'isOk(var)' or 'not(isOk(var))'
+    std::string verifiedVarName = "";
+    bool isNegated = false;
+
+    // 1. Check for 'isOk(var)'
     if (auto* call = dynamic_cast<CallExpr*>(stmt->condition.get())) {
         if (auto* var = dynamic_cast<VariableExpr*>(call->callee.get())) {
              if (var->name.lexeme == "isOk" && call->arguments.size() == 1) {
                  if (auto* arg = dynamic_cast<VariableExpr*>(call->arguments[0].get())) {
-                     refinedVarName = arg->name.lexeme;
+                     verifiedVarName = arg->name.lexeme;
                  }
+             }
+        }
+    }
+    // 2. Check for 'not(isOk(var))' (UnaryExpr with op NOT)
+    else if (auto* unary = dynamic_cast<UnaryExpr*>(stmt->condition.get())) {
+        if (unary->op.type == TokenType::NOT) {
+             if (auto* call = dynamic_cast<CallExpr*>(unary->right.get())) {
+                if (auto* var = dynamic_cast<VariableExpr*>(call->callee.get())) {
+                     if (var->name.lexeme == "isOk" && call->arguments.size() == 1) {
+                         if (auto* arg = dynamic_cast<VariableExpr*>(call->arguments[0].get())) {
+                             verifiedVarName = arg->name.lexeme;
+                             isNegated = true;
+                         }
+                     }
+                }
              }
         }
     }
@@ -446,12 +489,15 @@ void Codegen::genIf(IfStmt* stmt) {
     genExpr(stmt->condition.get());
     out << ") ";
 
-    // Enter scope for then branch to refine var
+    // Enter scope for then branch
     enterScope();
-    if (!refinedVarName.empty()) {
-        VarInfo* outer = resolveVar(refinedVarName);
+
+    // Case A: if (isOk(x)) { ... }
+    // Refine x in THEN branch
+    if (!verifiedVarName.empty() && !isNegated) {
+        VarInfo* outer = resolveVar(verifiedVarName);
         if (outer) {
-            scopes.back()[refinedVarName] = {outer->type, true};
+            scopes.back()[verifiedVarName] = {outer->type, true}; // Shadow with proven ok
         }
     }
 
@@ -461,8 +507,30 @@ void Codegen::genIf(IfStmt* stmt) {
     if (stmt->elseBranch) {
         emitIndent();
         out << "else ";
+
+        // Enter scope for else branch
+        enterScope();
+
+        // Case B: if (not(isOk(x))) { ... } else { ... }
+        // Refine x in ELSE branch
+        if (!verifiedVarName.empty() && isNegated) {
+            VarInfo* outer = resolveVar(verifiedVarName);
+            if (outer) {
+                scopes.back()[verifiedVarName] = {outer->type, true};
+            }
+        }
+
         genStmt(stmt->elseBranch.get());
-        // No refinement in else
+        exitScope();
+    }
+
+    // Case C: Flow sensitive return
+    // if (not(isOk(x))) { return; }
+    // Refine x in the CURRENT scope (which is now the "else" path implicitly)
+    if (!verifiedVarName.empty() && isNegated) {
+        if (isTerminal(stmt->thenBranch.get())) {
+            refineVar(verifiedVarName);
+        }
     }
 }
 
