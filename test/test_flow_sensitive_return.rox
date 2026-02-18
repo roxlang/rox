@@ -1,0 +1,15 @@
+function foo() -> rox_result[int64] {
+    return 42/1;
+}
+
+function main() -> none {
+    rox_result[int64] a = foo();
+    if (not(isOk(a))) {
+        print("Error\n");
+        return;
+    }
+
+    // This should be allowed now
+    int64 b = getValue(a);
+    print(b, "\n");
+}

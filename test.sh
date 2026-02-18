@@ -101,6 +101,7 @@ run_test "test/types_default_primitives.rox"
 run_test "test/types_default_nested.rox"
 run_test "test/two_sum.rox"
 run_test "test/valid_parentheses.rox"
+run_test "test/test_flow_sensitive_return.rox"
 
 # run tests that should fail
 test_fail "test/test_roxv26_prefix.rox"
